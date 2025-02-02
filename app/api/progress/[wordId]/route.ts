@@ -2,14 +2,13 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-type Props = {
-  params: {
-    wordId: string;
-  };
-};
-
-export async function GET(request: Request, { params }: Props) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ wordId: string }> }
+) {
   const session = await getServerSession();
+
+  const wordId = (await params).wordId;
 
   if (!session?.user) {
     return new NextResponse("Unauthorized", { status: 401 });
@@ -28,7 +27,7 @@ export async function GET(request: Request, { params }: Props) {
       where: {
         userId_wordId: {
           userId: user.id,
-          wordId: params.wordId,
+          wordId,
         },
       },
     });
