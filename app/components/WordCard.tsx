@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSpeech } from "../hooks/useSpeech";
 import { LevelBadge } from "./LevelBadge";
+import { ProgressCircle } from "./ProgressCircle";
 
 interface Word {
   id: string;
@@ -74,9 +75,15 @@ interface WordCardProps {
   word: Word;
   deckId: string;
   onProgress?: () => void;
+  strength?: number;
 }
 
-export const WordCard = ({ word, deckId, onProgress }: WordCardProps) => {
+export const WordCard = ({
+  word,
+  deckId,
+  onProgress,
+  strength,
+}: WordCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const { SpeakableText } = useSpeech();
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
@@ -201,6 +208,7 @@ export const WordCard = ({ word, deckId, onProgress }: WordCardProps) => {
                                 {word.partOfSpeech}
                               </span>
                               <LevelBadge level={word.level || ""} />
+                              <ProgressCircle strength={strength || 2} />
                             </div>
                           </div>
                           <div className="text-sm text-gray-400">

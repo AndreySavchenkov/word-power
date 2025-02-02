@@ -2,12 +2,13 @@
 
 import { WordCard } from "@/app/components/WordCard";
 import Link from "next/link";
-import { Deck, Word, DeckWord } from "@prisma/client";
-import { useState } from "react";
+import { Deck, Word, DeckWord, UserWordProgress } from "@prisma/client";
+import { useState, useEffect } from "react";
 
 type DeckWithWords = Deck & {
   words: (DeckWord & {
     word: Word;
+    progress?: UserWordProgress;
   })[];
 };
 
@@ -19,6 +20,28 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [wordProgress, setWordProgress] = useState<UserWordProgress | null>(
+    null
+  );
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      const currentWordId = deck.words[currentWordIndex]?.word.id;
+      if (!currentWordId) return;
+
+      try {
+        const response = await fetch(`/api/progress/${currentWordId}`);
+        if (response.ok) {
+          const progress = await response.json();
+          setWordProgress(progress);
+        }
+      } catch (error) {
+        console.error("Failed to fetch progress:", error);
+      }
+    };
+
+    fetchProgress();
+  }, [currentWordIndex, deck.words]);
 
   const handleProgress = () => {
     setIsTransitioning(true);
@@ -109,6 +132,7 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
             }}
             deckId={deck.id}
             onProgress={handleProgress}
+            strength={wordProgress?.strength}
           />
         </div>
       </div>
