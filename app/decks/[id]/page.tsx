@@ -2,22 +2,18 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { DeckPageClient } from "./DeckPageClient";
-import type { NextRequest } from 'next/server'
 
-export default async function DeckPage(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export default async function DeckPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession();
 
-  const id = (await params).id;
+  const id = (await params).id
 
   if (!session?.user) {
     redirect("/api/auth/signin");
   }
 
   const deck = await prisma.deck.findUnique({
-    where: { id },
+    where: { id: id },
     include: {
       words: {
         include: {
