@@ -38,15 +38,47 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
     return (
       <div className="min-h-screen pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-100">
-              Все карточки пройдены!
+          <div className="text-center space-y-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600/20">
+              <svg
+                className="w-8 h-8 text-green-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-100">
+              All cards completed!
             </h2>
+            <p className="text-gray-400 max-w-sm mx-auto">
+              Great job! You&apos;ve reviewed all the cards in this deck. Would
+              you like to try another deck?
+            </p>
             <Link
               href="/decks"
-              className="mt-4 inline-block text-gray-400 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              ← Вернуться к колодам
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              Back to Decks
             </Link>
           </div>
         </div>
@@ -57,35 +89,6 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
   return (
     <div className="min-h-screen pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Link
-              href="/decks"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              ← Назад к колодам
-            </Link>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-100">{deck.name}</h1>
-              {deck.description && (
-                <p className="text-gray-400 mt-2">{deck.description}</p>
-              )}
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="px-3 py-1 bg-blue-900 text-blue-100 rounded-full text-xs">
-                {deck.level}
-              </span>
-              <span className="text-sm text-gray-400">{deck.category}</span>
-              <span className="text-sm text-gray-400">
-                {currentWordIndex + 1} / {deck.words.length}
-              </span>
-            </div>
-          </div>
-        </div>
-
         <div
           className={`space-y-8 ${
             isTransitioning ? "pointer-events-none" : ""

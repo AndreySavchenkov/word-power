@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useSpeech } from "../hooks/useSpeech";
+import { LevelBadge } from "./LevelBadge";
 
 interface Word {
   id: string;
@@ -199,9 +200,7 @@ export const WordCard = ({ word, deckId, onProgress }: WordCardProps) => {
                               <span className="text-sm text-gray-400">
                                 {word.partOfSpeech}
                               </span>
-                              <span className="px-2 py-0.5 bg-blue-900 text-blue-100 rounded text-xs">
-                                {word.level}
-                              </span>
+                              <LevelBadge level={word.level || ""} />
                             </div>
                           </div>
                           <div className="text-sm text-gray-400">

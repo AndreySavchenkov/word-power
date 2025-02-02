@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LevelBadge } from "./LevelBadge";
 
 interface DeckProps {
   deck: {
@@ -23,13 +24,11 @@ export const DeckCard = ({ deck }: DeckProps) => {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="px-3 py-1 bg-blue-900 text-blue-100 rounded-full text-xs">
-            {deck.level}
-          </span>
+          <LevelBadge level={deck.level} />
           <span className="text-sm text-gray-400">{deck.category}</span>
           {deck.wordsCount !== undefined && (
             <span className="text-sm text-gray-400">
-              {deck.wordsCount} слов
+              {deck.wordsCount} {deck.wordsCount === 1 ? "word" : "words"}
             </span>
           )}
         </div>
