@@ -2,13 +2,13 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-interface RouteParams {
+type Props = {
   params: {
     wordId: string;
   };
-}
+};
 
-export async function GET(request: Request, { params }: RouteParams) {
+export async function GET(request: Request, { params }: Props) {
   const session = await getServerSession();
 
   if (!session?.user) {
