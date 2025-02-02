@@ -120,15 +120,11 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
           <WordCard
             key={currentWord.id}
             word={{
-              id: currentWord.id,
-              eng: currentWord.eng,
-              partOfSpeech: currentWord.partOfSpeech,
-              level: currentWord.level || undefined,
-              pronunciation: currentWord.pronunciation,
-              definition: currentWord.definition,
-              examples: currentWord.examples,
-              imgUrl: currentWord.imgUrl || "",
-              videoUrls: currentWord.videoUrls,
+              ...currentWord,
+              globalStrength: 0,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              imgUrl: currentWord.imgUrl || null,
             }}
             deckId={deck.id}
             onProgress={handleProgress}

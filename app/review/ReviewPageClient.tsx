@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Word, UserWordProgress, Deck } from "@prisma/client";
+import { Word, UserWordProgress } from "@prisma/client";
 import { WordCard } from "../components/WordCard";
 import Link from "next/link";
 
 type WordToReview = UserWordProgress & {
-  word: Word;
+  word: Omit<Word, "level"> & {
+    level: Word["level"] | null;
+  };
   deck: {
     id: string;
     name: string;
@@ -28,6 +30,7 @@ export function ReviewPageClient({
     setIsTransitioning(true);
     setTimeout(() => {
       setWords((prev) => prev.filter((_, i) => i !== currentIndex));
+      setCurrentIndex(0);
       setIsTransitioning(false);
     }, 500);
   };
@@ -56,8 +59,8 @@ export function ReviewPageClient({
               All reviews completed!
             </h2>
             <p className="text-gray-400 max-w-sm mx-auto">
-              Great job! You've reviewed all your cards for now. Come back later
-              for more reviews.
+              Great job! You&apos;ve reviewed all your cards for now. Come back
+              later for more reviews.
             </p>
             <Link
               href="/decks"

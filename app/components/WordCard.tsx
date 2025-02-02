@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSpeech } from "../hooks/useSpeech";
 import { LevelBadge } from "./LevelBadge";
 import { ProgressCircle } from "./ProgressCircle";
+import { PartOfSpeech } from "@prisma/client";
 
 interface Word {
   id: string;
@@ -72,7 +73,20 @@ const recallLevels: RecallLevel[] = [
 ];
 
 interface WordCardProps {
-  word: Word;
+  word: {
+    id: string;
+    eng: string;
+    partOfSpeech: PartOfSpeech;
+    level: Word["level"] | null;
+    pronunciation: string;
+    definition: string;
+    examples: string[];
+    imgUrl: string | null;
+    videoUrls: string[];
+    globalStrength: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
   deckId: string;
   onProgress?: () => void;
   strength?: number;
@@ -185,7 +199,7 @@ export const WordCard = ({
                       {/* Левая колонка с изображением */}
                       <div className="w-full sm:w-1/3">
                         <Image
-                          src={word.imgUrl}
+                          src={word.imgUrl || ""}
                           alt={word.eng}
                           width={300}
                           height={300}
