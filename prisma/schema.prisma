@@ -48,6 +48,10 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+  UserWordProgress UserWordProgress[]
+
+  Deck Deck[]
 }
 
 model VerificationToken {
@@ -56,4 +60,82 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum Level {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+enum PartOfSpeech {
+  noun
+  verb
+  adjective
+  adverb
+  pronoun
+  preposition
+  conjunction
+  interjection
+}
+
+model Word {
+  id             String             @id @default(cuid())
+  eng            String             @unique
+  partOfSpeech   PartOfSpeech
+  level          Level?
+  pronunciation  String
+  definition     String
+  examples       String[]
+  imgUrl         String?
+  videoUrls      String[]
+  globalStrength Int                @default(0) // Общая сила запоминания слова
+  decks          DeckWord[]
+  userProgress   UserWordProgress[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+}
+
+model Deck {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  category    String // "Travel", "Business" и т.д.
+  level       String // "A1", "B2" и т.д.
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  words       DeckWord[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model UserWordProgress {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id])
+  wordId       String
+  word         Word      @relation(fields: [wordId], references: [id])
+  strength     Int       @default(0)
+  lastReviewed DateTime  @default(now())
+  nextReview   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([userId, wordId])
+}
+
+model DeckWord {
+  id        String   @id @default(cuid())
+  wordId    String
+  word      Word     @relation(fields: [wordId], references: [id])
+  deckId    String
+  deck      Deck     @relation(fields: [deckId], references: [id])
+  order     Int // Порядок слова в колоде
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([wordId, deckId])
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AuthButton from "./AuthButton";
+import Link from "next/link";
 
 const Logo = () => (
   <div className="flex items-center gap-2">
@@ -33,7 +34,17 @@ export const Header = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Logo />
+          <Link href="/">
+            <Logo />
+          </Link>{" "}
+          <nav className=" items-center gap-6">
+            <Link
+              href="/decks"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Decks
+            </Link>
+          </nav>
           <AuthButton />
         </div>
       </div>

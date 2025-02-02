@@ -5,10 +5,19 @@ import Image from "next/image";
 import { useSpeech } from "../hooks/useSpeech";
 
 interface Word {
+  id: string;
   eng: string;
-  partOfSpeech: string;
+  partOfSpeech:
+    | "noun"
+    | "verb"
+    | "adjective"
+    | "adverb"
+    | "pronoun"
+    | "preposition"
+    | "conjunction"
+    | "interjection";
+  level?: "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
   pronunciation: string;
-  difficulty: string;
   definition: string;
   examples: string[];
   imgUrl: string;
@@ -60,7 +69,13 @@ const recallLevels: RecallLevel[] = [
   },
 ];
 
-export const WordCard = ({ word }: { word: Word }) => {
+interface WordCardProps {
+  word: Word;
+  deckId: string;
+  onProgress?: () => void;
+}
+
+export const WordCard = ({ word, deckId, onProgress }: WordCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const { SpeakableText } = useSpeech();
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
@@ -96,16 +111,31 @@ export const WordCard = ({ word }: { word: Word }) => {
     }
   };
 
-  const handleRecallLevel = (levelId: number) => {
+  const handleRecallLevel = async (levelId: number) => {
     setSelectedLevel(levelId);
     const direction = levelId >= 3 ? "right" : "left";
     setSlideDirection(direction);
 
-    // Увеличиваем время анимации для более плавного эффекта
-    setTimeout(() => {
-      // Здесь можно добавить логику для сохранения в БД
-      // и загрузки следующей карточки
-    }, 500);
+    try {
+      await fetch("/api/progress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          wordId: word.id,
+          strength: levelId,
+          deckId: deckId,
+        }),
+      });
+
+      // Вызываем callback для обновления UI
+      if (onProgress) {
+        setTimeout(onProgress, 500);
+      }
+    } catch (error) {
+      console.error("Failed to save progress:", error);
+    }
   };
 
   return (
@@ -170,7 +200,7 @@ export const WordCard = ({ word }: { word: Word }) => {
                                 {word.partOfSpeech}
                               </span>
                               <span className="px-2 py-0.5 bg-blue-900 text-blue-100 rounded text-xs">
-                                {word.difficulty}
+                                {word.level}
                               </span>
                             </div>
                           </div>
