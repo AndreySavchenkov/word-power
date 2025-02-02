@@ -14,14 +14,33 @@ const Logo = () => (
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [reviewCount, setReviewCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
+    const fetchReviewCount = async () => {
+      try {
+        const response = await fetch("/api/progress/count");
+        if (response.ok) {
+          const data = await response.json();
+          setReviewCount(data.count);
+        }
+      } catch (error) {
+        console.error("Failed to fetch review count:", error);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    fetchReviewCount();
+    const interval = setInterval(fetchReviewCount, 60000);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -36,13 +55,24 @@ export const Header = () => {
         <div className="flex items-center justify-between h-16">
           <Link href="/">
             <Logo />
-          </Link>{" "}
-          <nav className=" items-center gap-6">
+          </Link>
+          <nav className="flex items-center gap-6">
             <Link
               href="/decks"
               className="text-gray-300 hover:text-white transition-colors"
             >
               Decks
+            </Link>
+            <Link
+              href="/review"
+              className="text-gray-300 hover:text-white transition-colors flex items-center gap-2"
+            >
+              Review
+              {reviewCount > 0 && (
+                <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                  {reviewCount}
+                </span>
+              )}
             </Link>
           </nav>
           <AuthButton />

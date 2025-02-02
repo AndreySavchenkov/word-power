@@ -21,7 +21,15 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Обновляем или создаем запись о прогрессе
+    const currentProgress = await prisma.userWordProgress.findUnique({
+      where: {
+        userId_wordId: {
+          userId: user.id,
+          wordId: wordId,
+        },
+      },
+    });
+
     const progress = await prisma.userWordProgress.upsert({
       where: {
         userId_wordId: {
@@ -32,7 +40,7 @@ export async function POST(request: Request) {
       update: {
         strength: strength,
         lastReviewed: new Date(),
-        nextReview: calculateNextReview(strength),
+        nextReview: calculateNextReview(strength, currentProgress?.strength),
       },
       create: {
         userId: user.id,
@@ -50,16 +58,30 @@ export async function POST(request: Request) {
   }
 }
 
-function calculateNextReview(strength: number): Date {
+function calculateNextReview(strength: number, currentStrength?: number): Date {
   const now = new Date();
-  const intervals = {
-    1: 1, // 1 день для "Don't know"
-    2: 3, // 3 дня для "Hard"
-    3: 7, // 7 дней для "Good"
-    4: 14, // 14 дней для "Easy"
+
+  // Базовые интервалы для первого повторения
+  const baseIntervals = {
+    1: 1, // Don't know -> 1 день
+    2: 3, // Hard -> 3 дня
+    3: 7, // Good -> 7 дней
+    4: 14, // Easy -> 14 дней
   };
 
-  const days = intervals[strength as keyof typeof intervals] || 1;
-  now.setDate(now.getDate() + days);
+  // Если текущая сила запоминания такая же или выше
+  if (currentStrength && strength >= currentStrength) {
+    // Увеличиваем интервал в 2-2.5 раза
+    const multiplier = 2 + Math.random() * 0.5;
+    const days = Math.round(
+      baseIntervals[strength as keyof typeof baseIntervals] * multiplier
+    );
+    now.setDate(now.getDate() + days);
+  } else {
+    // Если ответ хуже предыдущего, используем базовый интервал
+    const days = baseIntervals[strength as keyof typeof baseIntervals];
+    now.setDate(now.getDate() + days);
+  }
+
   return now;
 }

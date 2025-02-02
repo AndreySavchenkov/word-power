@@ -208,7 +208,7 @@ export const WordCard = ({
                                 {word.partOfSpeech}
                               </span>
                               <LevelBadge level={word.level || ""} />
-                              <ProgressCircle strength={strength || 2} />
+                              <ProgressCircle strength={strength || 0} />
                             </div>
                           </div>
                           <div className="text-sm text-gray-400">
