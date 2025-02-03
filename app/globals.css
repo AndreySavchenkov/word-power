@@ -75,8 +75,8 @@ body {
 
 @media (max-width: 639px) {
   .card-container {
-    top: 50%;
+    top: calc(50% + 1.5rem);
     transform: translate(-50%, -50%);
-    height: calc(100vh - 12rem); /* Оставляем место для хедера и кнопок */
+    height: calc(100vh - 12rem);
   }
 }
