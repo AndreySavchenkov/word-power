@@ -206,7 +206,7 @@ export const WordCard = ({
                           className="w-full h-full object-cover rounded-lg shadow-md"
                         />
                         <div className="absolute top-0 left-0 right-0 sm:hidden">
-                          <div className="p-4">
+                          <div className="p-1">
                             <div className="bg-black bg-opacity-50 rounded-lg p-3">
                               <div className="flex items-center justify-between mb-2">
                                 <SpeakableText
