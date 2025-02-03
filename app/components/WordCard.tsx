@@ -27,11 +27,11 @@ interface Word {
   videoUrls: string[];
 }
 
-interface VideoParams {
-  videoId: string;
-  start?: string;
-  end?: string;
-}
+// interface VideoParams {
+//   videoId: string;
+//   start?: string;
+//   end?: string;
+// }
 
 interface RecallLevel {
   id: number;
