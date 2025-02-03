@@ -171,7 +171,7 @@ export const WordCard = ({
           `}
         >
           <div
-            className="relative h-[550px] sm:h-[500px] cursor-pointer perspective-1000"
+            className="relative h-[450px] sm:h-[500px] cursor-pointer perspective-1000"
             onClick={handleClick}
           >
             <div
@@ -197,15 +197,15 @@ export const WordCard = ({
                     {/* Верхняя секция */}
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
                       {/* Левая колонка с изображением */}
-                      <div className="w-full sm:w-1/3 relative">
+                      <div className="w-full sm:w-1/3 relative h-[200px] sm:h-auto">
                         <Image
                           src={word.imgUrl || ""}
                           alt={word.eng}
                           width={300}
                           height={300}
-                          className="w-full aspect-square object-cover rounded-lg shadow-md"
+                          className="w-full h-full object-cover rounded-lg shadow-md"
                         />
-                        <div className="absolute bottom-[190px] left-0 right-0 sm:hidden">
+                        <div className="absolute top-0 left-0 right-0 sm:hidden">
                           <div className="p-4">
                             <div className="bg-black bg-opacity-50 rounded-lg p-3">
                               <div className="flex items-center justify-between mb-2">
