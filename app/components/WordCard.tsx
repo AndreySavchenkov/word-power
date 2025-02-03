@@ -105,24 +105,24 @@ export const WordCard = ({
     "none" | "left" | "right"
   >("none");
 
-  const parseYouTubeUrl = (url: string): VideoParams | null => {
-    try {
-      const regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
-      const match = url.match(regExp);
-      if (!match || match[2].length !== 11) return null;
+  // const parseYouTubeUrl = (url: string): VideoParams | null => {
+  //   try {
+  //     const regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
+  //     const match = url.match(regExp);
+  //     if (!match || match[2].length !== 11) return null;
 
-      const urlObj = new URL(url);
-      const searchParams = new URLSearchParams(urlObj.search);
+  //     const urlObj = new URL(url);
+  //     const searchParams = new URLSearchParams(urlObj.search);
 
-      return {
-        videoId: match[2],
-        start: searchParams.get("start") || undefined,
-        end: searchParams.get("end") || undefined,
-      };
-    } catch {
-      return null;
-    }
-  };
+  //     return {
+  //       videoId: match[2],
+  //       start: searchParams.get("start") || undefined,
+  //       end: searchParams.get("end") || undefined,
+  //     };
+  //   } catch {
+  //     return null;
+  //   }
+  // };
 
   const handleClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -171,7 +171,7 @@ export const WordCard = ({
           `}
         >
           <div
-            className="relative h-[650px] sm:h-[500px] cursor-pointer perspective-1000"
+            className="relative h-[550px] sm:h-[500px] cursor-pointer perspective-1000"
             onClick={handleClick}
           >
             <div
@@ -197,7 +197,7 @@ export const WordCard = ({
                     {/* Верхняя секция */}
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
                       {/* Левая колонка с изображением */}
-                      <div className="w-full sm:w-1/3">
+                      <div className="w-full sm:w-1/3 relative">
                         <Image
                           src={word.imgUrl || ""}
                           alt={word.eng}
@@ -205,18 +205,38 @@ export const WordCard = ({
                           height={300}
                           className="w-full aspect-square object-cover rounded-lg shadow-md"
                         />
+                        <div className="absolute bottom-[190px] left-0 right-0 sm:hidden">
+                          <div className="p-4">
+                            <div className="bg-black bg-opacity-50 rounded-lg p-3">
+                              <div className="flex items-center justify-between mb-2">
+                                <SpeakableText
+                                  text={word.eng}
+                                  className="text-2xl font-bold text-white speakable-text"
+                                />
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm text-gray-200">
+                                    {word.partOfSpeech}
+                                  </span>
+                                  <LevelBadge level={word.level || ""} />
+                                  <ProgressCircle strength={strength || 0} />
+                                </div>
+                              </div>
+                              <div className="text-sm text-gray-200">
+                                {word.pronunciation}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Правая колонка с информацией */}
                       <div className="w-full sm:w-2/3 flex flex-col">
-                        <div className="mb-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-2">
-                            <div className="flex items-center gap-2">
-                              <SpeakableText
-                                text={word.eng}
-                                className="text-3xl font-bold text-gray-100 speakable-text"
-                              />
-                            </div>
+                        <div className="hidden sm:block mb-4">
+                          <div className="flex items-center justify-between gap-2 mb-2">
+                            <SpeakableText
+                              text={word.eng}
+                              className="text-3xl font-bold text-gray-100 speakable-text"
+                            />
                             <div className="flex items-center gap-2">
                               <span className="text-sm text-gray-400">
                                 {word.partOfSpeech}
@@ -254,7 +274,7 @@ export const WordCard = ({
                     </div>
 
                     {/* Видео секция */}
-                    <div className="mt-auto pt-4 border-t border-slate-700">
+                    {/* <div className="mt-auto pt-4 border-t border-slate-700">
                       <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         {word.videoUrls.map((url, index) => {
                           const params = parseYouTubeUrl(url);
@@ -277,7 +297,7 @@ export const WordCard = ({
                           );
                         })}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
