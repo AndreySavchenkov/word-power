@@ -20,11 +20,14 @@ export const useSpeech = () => {
         voice.lang.includes("en")
       );
 
-      const googleUSVoice = englishVoices.find(
-        (voice) => voice.name === "Google US English" && voice.lang === "en-US"
+      const preferredVoice = englishVoices.find(
+        (voice) =>
+          (voice.name === "Google US English" && voice.lang === "en-US") ||
+          (voice.name === "Samantha" && voice.lang === "en-US") ||
+          (voice.name === "Alex" && voice.lang === "en-US")
       );
 
-      if (!googleUSVoice) {
+      if (!preferredVoice) {
         const usVoices = englishVoices.filter(
           (voice) => voice.lang === "en-US"
         );
@@ -42,7 +45,7 @@ export const useSpeech = () => {
           setSelectedVoice(largestVoice);
         }
       } else if (!selectedVoice) {
-        setSelectedVoice(googleUSVoice);
+        setSelectedVoice(preferredVoice);
       }
     };
 
@@ -68,7 +71,7 @@ export const useSpeech = () => {
       utterance.voice = selectedVoice;
     }
 
-    utterance.rate = 0.9;
+    utterance.rate = 1.0;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
