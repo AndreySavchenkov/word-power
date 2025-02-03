@@ -182,7 +182,7 @@ export const WordCard = ({
             >
               {/* Передняя сторона */}
               <div className="absolute w-full h-full backface-hidden">
-                <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-6 flex items-center justify-center">
+                <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-4 sm:p-6 flex items-center justify-center">
                   <SpeakableText
                     text={word.eng}
                     className="text-6xl font-bold text-gray-100 speakable-text"
@@ -192,7 +192,7 @@ export const WordCard = ({
 
               {/* Задняя сторона */}
               <div className="absolute w-full h-full backface-hidden rotate-y-180">
-                <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-6 overflow-y-auto">
+                <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-2 sm:p-6 overflow-y-auto">
                   <div className="h-full flex flex-col">
                     {/* Верхняя секция */}
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">

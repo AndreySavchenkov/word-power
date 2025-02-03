@@ -60,7 +60,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 30;
-  width: calc(100% - 2rem);
+  width: 100%;
   max-width: 42rem;
   padding: 0 1rem;
 }
