@@ -13,16 +13,17 @@ export default function AuthButton() {
           <Image
             src={session?.user?.image}
             alt="user"
-            className="rounded-full"
+            className="rounded-full w-6 h-6 sm:w-8 sm:h-8"
             width={32}
             height={32}
           />
         )}
         <button
           onClick={() => signOut()}
-          className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors"
+          className="px-2 sm:px-4 py-1.5 sm:py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors"
         >
-          Sign Out
+          <span className="hidden sm:inline">Sign Out</span>
+          <span className="sm:hidden">Exit</span>
         </button>
       </div>
     );
@@ -30,9 +31,10 @@ export default function AuthButton() {
   return (
     <button
       onClick={() => signIn("google")}
-      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+      className="px-2 sm:px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors"
     >
-      Sign in with Google
+      <span className="hidden sm:inline">Sign in with Google</span>
+      <span className="sm:hidden">Sign in</span>
     </button>
   );
 }

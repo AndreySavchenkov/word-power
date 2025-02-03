@@ -6,7 +6,10 @@ import Link from "next/link";
 
 const Logo = () => (
   <div className="flex items-center gap-2">
-    <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-blue-500">
+    <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-blue-500 sm:hidden">
+      WP
+    </span>
+    <span className="hidden sm:inline text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-blue-500">
       Word Power
     </span>
   </div>
@@ -52,24 +55,24 @@ export const Header = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-12 sm:h-16">
           <Link href="/">
             <Logo />
           </Link>
           <nav className="flex items-center gap-6">
             <Link
               href="/decks"
-              className="text-gray-300 hover:text-white transition-colors"
+              className="text-xs sm:text-sm text-gray-300 hover:text-white transition-colors"
             >
               Decks
             </Link>
             <Link
               href="/review"
-              className="text-gray-300 hover:text-white transition-colors flex items-center gap-2"
+              className="text-xs sm:text-sm text-gray-300 hover:text-white transition-colors flex items-center gap-2"
             >
               Review
               {reviewCount > 0 && (
-                <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                <span className="inline-flex items-center justify-center px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
                   {reviewCount}
                 </span>
               )}
