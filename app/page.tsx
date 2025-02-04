@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { UserCard } from "./components/UserCard";
+import { HomePageClient } from "./HomePageClient";
 
 export default async function Home() {
   const users = await prisma.user.findMany({
@@ -7,23 +7,36 @@ export default async function Home() {
       id: true,
       name: true,
       image: true,
+      email: true,
       UserWordProgress: {
         select: {
+          id: true,
           strength: true,
+          lastReviewed: true,
+        },
+        orderBy: {
+          lastReviewed: "desc",
         },
       },
     },
   });
 
-  const usersWithProgress = users.map((user) => {
-    const totalWords = user.UserWordProgress.length;
+  const initialUsers = users.map((user) => {
+    const uniqueWords = new Map();
+    user.UserWordProgress.forEach((progress) => {
+      uniqueWords.set(progress.id, progress);
+    });
+
+    const progressArray = Array.from(uniqueWords.values());
+    const totalWords = progressArray.length;
     const averageStrength = totalWords
-      ? user.UserWordProgress.reduce((acc, curr) => acc + curr.strength, 0) /
-        totalWords
+      ? progressArray.reduce((acc, curr) => acc + curr.strength, 0) / totalWords
       : 0;
 
     return {
-      ...user,
+      id: user.id,
+      name: user.name,
+      image: user.image,
       progress: {
         totalWords,
         averageStrength,
@@ -37,11 +50,7 @@ export default async function Home() {
         <h1 className="text-3xl font-bold text-gray-100 mb-8">
           Users and Their Progress
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {usersWithProgress.map((user) => (
-            <UserCard key={user.id} user={user} />
-          ))}
-        </div>
+        <HomePageClient initialUsers={initialUsers} />
       </div>
     </div>
   );
