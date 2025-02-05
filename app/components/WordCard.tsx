@@ -10,18 +10,10 @@ import { PartOfSpeech } from "@prisma/client";
 interface Word {
   id: string;
   eng: string;
-  partOfSpeech:
-    | "noun"
-    | "verb"
-    | "adjective"
-    | "adverb"
-    | "pronoun"
-    | "preposition"
-    | "conjunction"
-    | "interjection";
+  partOfSpeech: PartOfSpeech[];
   level?: "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
   pronunciation: string;
-  definition: string;
+  definition: string[];
   examples: string[];
   imgUrl: string;
   videoUrls: string[];
@@ -76,10 +68,10 @@ interface WordCardProps {
   word: {
     id: string;
     eng: string;
-    partOfSpeech: PartOfSpeech;
+    partOfSpeech: PartOfSpeech[];
     level: Word["level"] | null;
     pronunciation: string;
-    definition: string;
+    definition: string[];
     examples: string[];
     imgUrl: string | null;
     videoUrls: string[];
@@ -91,6 +83,49 @@ interface WordCardProps {
   onProgress?: () => void;
   strength?: number;
 }
+
+const partOfSpeechStyles = {
+  noun: {
+    emoji: "📦",
+    color: "bg-blue-700 text-blue-100",
+    label: "noun",
+  },
+  verb: {
+    emoji: "🏃",
+    color: "bg-green-700 text-green-100",
+    label: "verb",
+  },
+  adjective: {
+    emoji: "🎨",
+    color: "bg-purple-700 text-purple-100",
+    label: "adj",
+  },
+  adverb: {
+    emoji: "⚡",
+    color: "bg-yellow-700 text-yellow-100",
+    label: "adv",
+  },
+  pronoun: {
+    emoji: "👤",
+    color: "bg-pink-700 text-pink-100",
+    label: "pron",
+  },
+  preposition: {
+    emoji: "🔗",
+    color: "bg-orange-700 text-orange-100",
+    label: "prep",
+  },
+  conjunction: {
+    emoji: "🤝",
+    color: "bg-red-700 text-red-100",
+    label: "conj",
+  },
+  interjection: {
+    emoji: "💭",
+    color: "bg-indigo-700 text-indigo-100",
+    label: "interj",
+  },
+} as const;
 
 export const WordCard = ({
   word,
@@ -198,13 +233,19 @@ export const WordCard = ({
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
                       {/* Левая колонка с изображением */}
                       <div className="w-full sm:w-1/3 relative h-[200px] sm:h-auto">
-                        <Image
-                          src={word.imgUrl || ""}
-                          alt={word.eng}
-                          width={300}
-                          height={300}
-                          className="w-full h-full object-cover rounded-lg shadow-md"
-                        />
+                        {word.imgUrl ? (
+                          <Image
+                            src={word.imgUrl}
+                            alt={word.eng}
+                            width={300}
+                            height={300}
+                            className="w-full h-full object-cover rounded-lg shadow-md"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-700 rounded-lg flex items-center justify-center">
+                            <span className="text-gray-400">No image</span>
+                          </div>
+                        )}
                         <div className="absolute top-0 left-0 right-0 sm:hidden">
                           <div className="p-1">
                             <div className="bg-black bg-opacity-50 rounded-lg p-3">
@@ -214,9 +255,6 @@ export const WordCard = ({
                                   className="text-2xl font-bold text-white speakable-text"
                                 />
                                 <div className="flex items-center gap-2">
-                                  <span className="text-sm text-gray-200">
-                                    {word.partOfSpeech}
-                                  </span>
                                   <LevelBadge level={word.level || ""} />
                                   <ProgressCircle strength={strength || 0} />
                                 </div>
@@ -238,9 +276,6 @@ export const WordCard = ({
                               className="text-3xl font-bold text-gray-100 speakable-text"
                             />
                             <div className="flex items-center gap-2">
-                              <span className="text-sm text-gray-400">
-                                {word.partOfSpeech}
-                              </span>
                               <LevelBadge level={word.level || ""} />
                               <ProgressCircle strength={strength || 0} />
                             </div>
@@ -249,9 +284,28 @@ export const WordCard = ({
                             {word.pronunciation}
                           </div>
                         </div>
-                        <p className="text-gray-300 text-sm mb-4">
-                          {word.definition}
-                        </p>
+
+                        {/* Выводим все части речи и определения */}
+                        <div className="mb-4">
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {word.partOfSpeech.map((pos, index) => (
+                              <span
+                                key={index}
+                                className={`text-sm px-2 py-1 rounded flex items-center gap-1 ${partOfSpeechStyles[pos].color}`}
+                              >
+                                <span>{partOfSpeechStyles[pos].emoji}</span>
+                                <span>{partOfSpeechStyles[pos].label}</span>
+                              </span>
+                            ))}
+                          </div>
+                          <div className="space-y-2">
+                            {word.definition.map((def, index) => (
+                              <p key={index} className="text-gray-300 text-sm">
+                                • {def}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
 
                         {/* Примеры */}
                         <div className="space-y-1.5">

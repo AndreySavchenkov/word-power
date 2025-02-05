@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Word" ALTER COLUMN "partOfSpeech" DROP DEFAULT,
+ALTER COLUMN "definition" DROP DEFAULT;

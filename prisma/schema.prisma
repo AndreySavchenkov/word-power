@@ -85,10 +85,10 @@ enum PartOfSpeech {
 model Word {
   id             String             @id @default(cuid())
   eng            String             @unique
-  partOfSpeech   PartOfSpeech
+  partOfSpeech   PartOfSpeech[] // Теперь массив
   level          Level?
   pronunciation  String
-  definition     String
+  definition     String[] // Теперь массив
   examples       String[]
   imgUrl         String?
   videoUrls      String[]
