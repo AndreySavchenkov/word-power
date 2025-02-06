@@ -7,8 +7,9 @@ import { useState, useEffect } from "react";
 
 type DeckWithWords = Deck & {
   words: (DeckWord & {
-    word: Word;
-    progress?: UserWordProgress;
+    word: Word & {
+      userProgress: UserWordProgress[];
+    };
   })[];
 };
 
