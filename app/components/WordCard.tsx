@@ -260,7 +260,7 @@ export const WordCard = ({
                                 </div>
                               </div>
                               <div className="text-sm text-gray-200">
-                                {word.pronunciation}
+                                {`/${word.pronunciation}/`}
                               </div>
                             </div>
                           </div>
@@ -281,7 +281,7 @@ export const WordCard = ({
                             </div>
                           </div>
                           <div className="text-sm text-gray-400">
-                            {word.pronunciation}
+                            {`/${word.pronunciation}/`}
                           </div>
                         </div>
 
@@ -300,7 +300,7 @@ export const WordCard = ({
                           </div>
                           <div className="space-y-2">
                             {word.definition.map((def, index) => (
-                              <p key={index} className="text-gray-300 text-sm">
+                              <p key={index} className="text-gray-300 text-md">
                                 • {def}
                               </p>
                             ))}
@@ -309,13 +309,11 @@ export const WordCard = ({
 
                         {/* Примеры */}
                         <div className="space-y-1.5">
-                          <h3 className="font-semibold text-gray-200 text-sm">
-                            Examples:
-                          </h3>
+                          <div className="border-t border-slate-700 mb-3 w-full"></div>
                           {word.examples.map((example, index) => (
                             <div
                               key={index}
-                              className="flex items-center gap-2 text-gray-300"
+                              className="flex items-center gap-2 text-gray-500"
                             >
                               <SpeakableText
                                 text={example}
