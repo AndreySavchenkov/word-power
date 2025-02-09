@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 interface SpeakableTextProps {
   text: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export const useSpeech = () => {
@@ -81,12 +82,17 @@ export const useSpeech = () => {
     window.speechSynthesis.speak(utterance);
   };
 
-  const SpeakableText = ({ text, className = "" }: SpeakableTextProps) => (
+  const SpeakableText = ({
+    text,
+    className = "",
+    style,
+  }: SpeakableTextProps) => (
     <span
       className={`group inline-flex items-center gap-1 cursor-pointer ${
         pressedText === text ? "scale-95" : "scale-100"
       } transition-all duration-150 ${className}`}
       onClick={() => speak(text)}
+      style={style}
     >
       {text}
       <svg

@@ -220,7 +220,13 @@ export const WordCard = ({
                 <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-4 sm:p-6 flex items-center justify-center">
                   <SpeakableText
                     text={word.eng}
-                    className="text-6xl font-bold text-gray-100 speakable-text"
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-100 speakable-text text-center break-words max-w-full px-4"
+                    style={{
+                      wordBreak: "break-word",
+                      overflowWrap: "break-word",
+                      hyphens: "auto",
+                      lineHeight: "1.2",
+                    }}
                   />
                 </div>
               </div>
