@@ -384,7 +384,7 @@ export const WordCard = ({
                   key={level.id}
                   onClick={() => handleRecallLevel(level.id)}
                   className={`
-                    px-6 py-3 rounded-xl text-sm font-medium
+                    px-3 py-3 rounded-xl text-sm font-medium
                     transform transition-all duration-200
                     ${level.bgColor} ${level.color} ${level.hoverBgColor}
                     hover:scale-105 active:scale-95 shadow-lg
@@ -404,7 +404,7 @@ export const WordCard = ({
                 <button
                   onClick={() => onProgress?.()}
                   className={`
-                    px-6 py-[11px] rounded-xl text-sm font-medium min-w-[400px]
+                    px-3 py-[11px] rounded-xl text-sm font-medium w-full
                     transform transition-all duration-200
                     ${skipButtonStyle.bgColor} ${skipButtonStyle.color} ${skipButtonStyle.hoverBgColor}
                     hover:scale-105 active:scale-95
