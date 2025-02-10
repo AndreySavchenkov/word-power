@@ -82,6 +82,7 @@ interface WordCardProps {
   deckId: string;
   onProgress?: () => void;
   strength?: number;
+  showSkipButton?: boolean;
 }
 
 const partOfSpeechStyles = {
@@ -127,11 +128,20 @@ const partOfSpeechStyles = {
   },
 } as const;
 
+const skipButtonStyle = {
+  id: 0,
+  label: "Skip",
+  color: "text-slate-300",
+  bgColor: "bg-slate-700",
+  hoverBgColor: "hover:bg-slate-600",
+} as const;
+
 export const WordCard = ({
   word,
   deckId,
   onProgress,
   strength,
+  showSkipButton,
 }: WordCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const { SpeakableText } = useSpeech();
@@ -206,7 +216,7 @@ export const WordCard = ({
           `}
         >
           <div
-            className="relative h-[450px] sm:h-[500px] cursor-pointer perspective-1000"
+            className="relative h-[450px] cursor-pointer perspective-1000"
             onClick={handleClick}
           >
             <div
@@ -367,26 +377,44 @@ export const WordCard = ({
       {/* Кнопки уровня запоминания */}
       <div className="buttons-container">
         <div className="max-w-2xl mx-auto px-4">
-          <div className="flex justify-center gap-3">
-            {recallLevels.map((level) => (
-              <button
-                key={level.id}
-                onClick={() => handleRecallLevel(level.id)}
-                className={`
-                  px-6 py-3 rounded-xl text-sm font-medium
-                  transform transition-all duration-200
-                  ${level.bgColor} ${level.color} ${level.hoverBgColor}
-                  hover:scale-105 active:scale-95 shadow-lg
-                  ${
-                    selectedLevel === level.id
-                      ? "ring-2 ring-white ring-opacity-50"
-                      : ""
-                  }
-                `}
-              >
-                {level.label}
-              </button>
-            ))}
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-center gap-3">
+              {recallLevels.map((level) => (
+                <button
+                  key={level.id}
+                  onClick={() => handleRecallLevel(level.id)}
+                  className={`
+                    px-6 py-3 rounded-xl text-sm font-medium
+                    transform transition-all duration-200
+                    ${level.bgColor} ${level.color} ${level.hoverBgColor}
+                    hover:scale-105 active:scale-95 shadow-lg
+                    ${
+                      selectedLevel === level.id
+                        ? "ring-2 ring-white ring-opacity-50"
+                        : ""
+                    }
+                  `}
+                >
+                  {level.label}
+                </button>
+              ))}
+            </div>
+            {showSkipButton && (
+              <div className="flex justify-center">
+                <button
+                  onClick={() => onProgress?.()}
+                  className={`
+                    px-6 py-[11px] rounded-xl text-sm font-medium min-w-[400px]
+                    transform transition-all duration-200
+                    ${skipButtonStyle.bgColor} ${skipButtonStyle.color} ${skipButtonStyle.hoverBgColor}
+                    hover:scale-105 active:scale-95
+                    border border-slate-600
+                  `}
+                >
+                  {skipButtonStyle.label}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -130,6 +130,7 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
             deckId={deck.id}
             onProgress={handleProgress}
             strength={wordProgress?.strength}
+            showSkipButton={true}
           />
         </div>
       </div>
