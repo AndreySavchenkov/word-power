@@ -1,9 +1,11 @@
 "use client";
 
 import { WordCard } from "@/app/components/WordCard";
+import { WordCardSkeleton } from "@/app/components/WordCardSkeleton";
 import Link from "next/link";
 import { Deck, Word, DeckWord, UserWordProgress } from "@prisma/client";
 import { useState, useEffect } from "react";
+import { RecallButtons } from "@/app/components/RecallButtons";
 
 type DeckWithWords = Deck & {
   words: (DeckWord & {
@@ -24,9 +26,11 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
   const [wordProgress, setWordProgress] = useState<UserWordProgress | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProgress = async () => {
+      setIsLoading(true);
       const currentWordId = deck.words[currentWordIndex]?.word.id;
       if (!currentWordId) return;
 
@@ -38,14 +42,19 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
         }
       } catch (error) {
         console.error("Failed to fetch progress:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchProgress();
   }, [currentWordIndex, deck.words]);
 
-  const handleProgress = () => {
+  const handleProgress = (levelId?: number) => {
     setIsTransitioning(true);
+    if (levelId) {
+      handleRecallLevel(levelId);
+    }
     setTimeout(() => {
       if (currentWordIndex < deck.words.length - 1) {
         setCurrentWordIndex((prev) => prev + 1);
@@ -54,6 +63,24 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
         setIsCompleted(true);
       }
     }, 500);
+  };
+
+  const handleRecallLevel = async (levelId: number) => {
+    try {
+      await fetch("/api/progress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          wordId: currentWord.id,
+          strength: levelId,
+          deckId: deck.id,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to save progress:", error);
+    }
   };
 
   const currentWord = deck.words[currentWordIndex]?.word;
@@ -113,25 +140,35 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
   return (
     <div className="min-h-screen pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`space-y-8 ${
-            isTransitioning ? "pointer-events-none" : ""
-          }`}
-        >
-          <WordCard
-            key={currentWord.id}
-            word={{
-              ...currentWord,
-              globalStrength: 0,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-              imgUrl: currentWord.imgUrl || null,
-            }}
-            deckId={deck.id}
-            onProgress={handleProgress}
-            strength={wordProgress?.strength}
-            showSkipButton={true}
-          />
+        <div className={isTransitioning ? "pointer-events-none" : ""}>
+          {isLoading ? (
+            <>
+              <WordCardSkeleton />
+              <RecallButtons
+                onProgress={handleProgress}
+                showSkipButton={true}
+              />
+            </>
+          ) : (
+            <>
+              <WordCard
+                key={currentWord.id}
+                word={{
+                  ...currentWord,
+                  globalStrength: 0,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                  imgUrl: currentWord.imgUrl || null,
+                }}
+                deckId={deck.id}
+                strength={wordProgress?.strength}
+              />
+              <RecallButtons
+                onProgress={handleProgress}
+                showSkipButton={true}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
