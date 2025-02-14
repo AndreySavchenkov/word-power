@@ -28,9 +28,29 @@ export function ReviewPageClient({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleProgress = () => {
+  const handleRecallLevel = async (levelId?: number) => {
+    try {
+      await fetch("/api/progress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          wordId: currentWord.wordId,
+          strength: levelId,
+          deckId: currentWord.deck.id,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to save progress:", error);
+    }
+  };
+
+  const handleProgress = async (levelId?: number) => {
     setIsTransitioning(true);
     setIsLoading(true);
+    console.log(currentWord)
+    await handleRecallLevel(levelId)
     setTimeout(() => {
       setWords((prev) => prev.filter((_, i) => i !== currentIndex));
       setCurrentIndex(0);

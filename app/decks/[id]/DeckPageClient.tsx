@@ -50,10 +50,10 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
     fetchProgress();
   }, [currentWordIndex, deck.words]);
 
-  const handleProgress = (levelId?: number) => {
+  const handleProgress = async (levelId?: number) => {
     setIsTransitioning(true);
     if (levelId) {
-      handleRecallLevel(levelId);
+      await handleRecallLevel(levelId);
     }
     setTimeout(() => {
       if (currentWordIndex < deck.words.length - 1) {
