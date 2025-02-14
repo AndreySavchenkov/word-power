@@ -18,6 +18,7 @@ export async function GET() {
         UserWordProgress: {
           select: {
             id: true,
+            wordId: true,
             strength: true,
             lastReviewed: true,
           },
@@ -31,7 +32,7 @@ export async function GET() {
     const usersWithProgress = users.map((user) => {
       const uniqueWords = new Map();
       user.UserWordProgress.forEach((progress) => {
-        uniqueWords.set(progress.id, progress);
+        uniqueWords.set(progress.wordId, progress);
       });
 
       const progressArray = Array.from(uniqueWords.values());

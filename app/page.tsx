@@ -13,6 +13,7 @@ export default async function Home() {
           id: true,
           strength: true,
           lastReviewed: true,
+          wordId: true,
         },
         orderBy: {
           lastReviewed: "desc",
@@ -24,7 +25,7 @@ export default async function Home() {
   const initialUsers = users.map((user) => {
     const uniqueWords = new Map();
     user.UserWordProgress.forEach((progress) => {
-      uniqueWords.set(progress.id, progress);
+      uniqueWords.set(progress.wordId, progress);
     });
 
     const progressArray = Array.from(uniqueWords.values());
