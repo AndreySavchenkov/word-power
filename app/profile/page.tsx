@@ -1,86 +1,92 @@
-import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { UserCard } from "@/app/components/UserCard";
+import {prisma} from "@/lib/prisma";
+import {getServerSession} from "next-auth";
+import {redirect} from "next/navigation";
+import {UserCard} from "@/app/components/UserCard";
 import {SignOutButton} from "@/app/components/SignOutButton";
 
-const transformUserData = (user: { name: string | null; id: string; email: string | null; image: string | null; UserWordProgress: { id: string; wordId: string; strength: number; lastReviewed: Date; }[]; }) => {
-  const uniqueWords = new Map();
+const transformUserData = (user: {
+	name: string | null;
+	id: string;
+	email: string | null;
+	image: string | null;
+	UserWordProgress: { id: string; wordId: string; strength: number; lastReviewed: Date; }[];
+}) => {
+	const uniqueWords = new Map();
 
-  user.UserWordProgress.forEach((progress: { wordId: string; }) => {
-    uniqueWords.set(progress.wordId, progress);
-  });
+	user.UserWordProgress.forEach((progress: { wordId: string; }) => {
+		uniqueWords.set(progress.wordId, progress);
+	});
 
-  const progressArray = Array.from(uniqueWords.values());
-  const totalWords = progressArray.length;
-  const averageStrength = totalWords
-    ? progressArray.reduce((acc, curr) => acc + curr.strength, 0) / totalWords
-    : 0;
+	const progressArray = Array.from(uniqueWords.values());
+	const totalWords = progressArray.length;
+	const averageStrength = totalWords
+		? progressArray.reduce((acc, curr) => acc + curr.strength, 0) / totalWords
+		: 0;
 
-  return {
-    id: user.id,
-    name: user.name,
-    image: user.image,
-    progress: {
-      totalWords,
-      averageStrength,
-    },
-  };
+	return {
+		id: user.id,
+		name: user.name,
+		image: user.image,
+		progress: {
+			totalWords,
+			averageStrength,
+		},
+	};
 };
 
 export default async function Profile() {
 
-  try {
-    const session = await getServerSession();
+	try {
+		const session = await getServerSession();
 
-    if (!session?.user) {
-      redirect("/api/auth/signin");
-    }
+		if (!session?.user) {
+			redirect("/api/auth/signin");
+		}
 
-    const userStat = await prisma.user.findUnique({
-      where: {
-        email: session.user?.email || "",
-      },
-      select: {
-        id: true,
-        name: true,
-        image: true,
-        email: true,
-        UserWordProgress: {
-          select: {
-            id: true,
-            strength: true,
-            lastReviewed: true,
-            wordId: true,
-          },
-          orderBy: {
-            lastReviewed: "desc",
-          },
-        },
-      },
-    });
+		const userStat = await prisma.user.findUnique({
+			where: {
+				email: session.user?.email || "",
+			},
+			select: {
+				id: true,
+				name: true,
+				image: true,
+				email: true,
+				UserWordProgress: {
+					select: {
+						id: true,
+						strength: true,
+						lastReviewed: true,
+						wordId: true,
+					},
+					orderBy: {
+						lastReviewed: "desc",
+					},
+				},
+			},
+		});
 
-    if (!userStat) {
-      redirect("/");
-    }
+		if (!userStat) {
+			redirect("/");
+		}
 
-    const formattedUser = transformUserData(userStat);
+		const formattedUser = transformUserData(userStat);
 
-    return (
-      <div className={"my-auto max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"}>
+		return (
+			<div className={"my-auto max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"}>
 
-        <div className="flex flex-col pt-24 gap-4  p-2">
-          <h1 className="text-2xl font-bold text-gray-100">My Profile:</h1>
+				<div className="flex flex-col pt-24 gap-4  p-2">
+					<h1 className="text-2xl font-bold text-gray-100">My Profile:</h1>
 
-          <UserCard key={userStat.id} user={formattedUser} />
+					<UserCard key={userStat.id} user={formattedUser}/>
 
-          <SignOutButton />
-        </div>
-      </div>
+					<SignOutButton/>
+				</div>
+			</div>
 
-    );
-  } catch (error) {
-    console.error("Error loading profile:", error);
-    redirect("/"); // При ошибке редиректим
-  }
+		);
+	} catch (error) {
+		console.error("Error loading profile:", error);
+		redirect("/"); // При ошибке редиректим
+	}
 }
