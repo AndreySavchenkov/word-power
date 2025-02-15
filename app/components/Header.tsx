@@ -61,12 +61,6 @@ export const Header = () => {
           </Link>
           <nav className="flex items-center gap-6">
             <Link
-              href="/decks"
-              className="text-xs sm:text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Decks
-            </Link>
-            <Link
               href="/review"
               className="text-xs sm:text-sm text-gray-300 hover:text-white transition-colors flex items-center gap-2"
             >

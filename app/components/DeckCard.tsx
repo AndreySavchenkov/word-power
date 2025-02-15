@@ -14,7 +14,7 @@ interface DeckProps {
 
 export const DeckCard = ({ deck }: DeckProps) => {
   return (
-    <Link href={`/decks/${deck.id}`}>
+    <Link href={`/${deck.id}`}>
       <div className="bg-slate-800 rounded-lg p-6 hover:bg-slate-700 transition-colors">
         <div className="mb-4">
           <h3 className="text-xl font-bold text-gray-100 mb-2">{deck.name}</h3>

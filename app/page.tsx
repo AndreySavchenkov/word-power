@@ -1,57 +1,45 @@
 import { prisma } from "@/lib/prisma";
-import { HomePageClient } from "./HomePageClient";
+import { DeckCard } from "./components/DeckCard";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      image: true,
-      email: true,
-      UserWordProgress: {
-        select: {
-          id: true,
-          strength: true,
-          lastReviewed: true,
-          wordId: true,
-        },
-        orderBy: {
-          lastReviewed: "desc",
-        },
-      },
-    },
+export default async function DecksPage() {
+  const session = await getServerSession();
+
+  if (!session?.user) {
+    redirect("/api/auth/signin");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user?.email || "" },
   });
 
-  const initialUsers = users.map((user) => {
-    const uniqueWords = new Map();
-    user.UserWordProgress.forEach((progress) => {
-      uniqueWords.set(progress.wordId, progress);
-    });
-
-    const progressArray = Array.from(uniqueWords.values());
-    const totalWords = progressArray.length;
-    const averageStrength = totalWords
-      ? progressArray.reduce((acc, curr) => acc + curr.strength, 0) / totalWords
-      : 0;
-
-    return {
-      id: user.id,
-      name: user.name,
-      image: user.image,
-      progress: {
-        totalWords,
-        averageStrength,
+  const decks = await prisma.deck.findMany({
+    where: {
+      userId: user?.id || "",
+    },
+    include: {
+      _count: {
+        select: { words: true },
       },
-    };
+    },
   });
 
   return (
     <div className="min-h-screen pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-100 mb-8">
-          Users and Their Progress
-        </h1>
-        <HomePageClient initialUsers={initialUsers} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {decks.map((deck) => (
+            <DeckCard
+              key={deck.id}
+              deck={{
+                ...deck,
+                description: deck.description || undefined,
+                wordsCount: deck._count.words,
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
