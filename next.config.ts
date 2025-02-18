@@ -1,22 +1,27 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  serverExternalPackages: ["@prisma/client", "@neondatabase/serverless"],
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+});
+
+const nextConfig = withPWA({
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
-        protocol: "https",
+        protocol: "https" as const,
         hostname: "images.unsplash.com",
         port: "",
         pathname: "/**",
       },
       {
-        protocol: "https",
+        protocol: "https" as const,
         hostname: "lh3.googleusercontent.com",
         port: "",
         pathname: "/a/**",
       },
     ],
   },
-};
+});
 
-export default nextConfig;
+module.exports = nextConfig;
