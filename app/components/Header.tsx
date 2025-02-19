@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import AuthButton from "./AuthButton";
 import Link from "next/link";
 import { useReviewCount } from "../contexts/ReviewCountContext";
+import logoImg from "@/public/icons/logo.png";
+import Image from "next/image";
 
 const Logo = () => (
   <div className="flex items-center gap-2">
-    <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-blue-500 sm:hidden">
-      WP
-    </span>
+    <Image src={logoImg} alt="Logo" width={36} height={36} />
     <span className="hidden sm:inline text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-blue-500">
-      Word Power
+      WordPower
     </span>
   </div>
 );
