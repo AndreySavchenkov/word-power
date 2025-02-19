@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import AuthButton from "./AuthButton";
 import Link from "next/link";
+import { useReviewCount } from "../contexts/ReviewCountContext";
 
 const Logo = () => (
   <div className="flex items-center gap-2">
@@ -17,7 +18,7 @@ const Logo = () => (
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [reviewCount, setReviewCount] = useState(0);
+  const { reviewCount, setReviewCount } = useReviewCount();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,7 +45,7 @@ export const Header = () => {
       window.removeEventListener("scroll", handleScroll);
       clearInterval(interval);
     };
-  }, []);
+  }, [setReviewCount]);
 
   return (
     <header

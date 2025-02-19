@@ -5,6 +5,7 @@ import { Word, UserWordProgress } from "@prisma/client";
 import { WordCard } from "../components/WordCard";
 import { WordCardSkeleton } from "../components/WordCardSkeleton";
 import { RecallButtons } from "../components/RecallButtons";
+import { useReviewCount } from "../contexts/ReviewCountContext";
 
 type WordToReview = UserWordProgress & {
   word: Omit<Word, "level"> & {
@@ -27,6 +28,7 @@ export function ReviewPageClient({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { decrementReviewCount } = useReviewCount();
 
   const handleRecallLevel = async (levelId?: number) => {
     try {
@@ -41,6 +43,7 @@ export function ReviewPageClient({
           deckId: currentWord.deck.id,
         }),
       });
+      decrementReviewCount();
     } catch (error) {
       console.error("Failed to save progress:", error);
     }
@@ -49,8 +52,7 @@ export function ReviewPageClient({
   const handleProgress = async (levelId?: number) => {
     setIsTransitioning(true);
     setIsLoading(true);
-    console.log(currentWord)
-    await handleRecallLevel(levelId)
+    await handleRecallLevel(levelId);
     setTimeout(() => {
       setWords((prev) => prev.filter((_, i) => i !== currentIndex));
       setCurrentIndex(0);

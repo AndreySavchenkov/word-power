@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Header } from "./components/Header";
+import { ReviewCountProvider } from "./contexts/ReviewCountContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,10 +22,12 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
       </head>
       <body className="bg-slate-900">
-        <Providers>
-          <Header />
-          <div>{children}</div>
-        </Providers>
+        <ReviewCountProvider>
+          <Providers>
+            <Header />
+            <div>{children}</div>
+          </Providers>
+        </ReviewCountProvider>
       </body>
     </html>
   );
