@@ -212,8 +212,13 @@ export const WordCard = ({
   };
 
   const translateDefinition = async (text: string) => {
-    // Если перевод уже существует, не делаем повторный запрос
+    // Если перевод уже существует, переключаем обратно на оригинал
     if (translations[text]) {
+      setTranslations((prev) => {
+        const newTranslations = { ...prev };
+        delete newTranslations[text];
+        return newTranslations;
+      });
       return;
     }
 
@@ -395,18 +400,15 @@ export const WordCard = ({
                                   translateDefinition(def);
                                 }}
                               >
-                                <p className="text-gray-200">{def}</p>
-                                {loadingTranslations[def] && (
-                                  <p className="text-sm text-gray-400 mt-1">
+                                <p className="text-gray-200">
+                                  {loadingTranslations[def] ? (
                                     <span className="loading-dots">...</span>
-                                  </p>
-                                )}
-                                {!loadingTranslations[def] &&
-                                  translations[def] && (
-                                    <p className="text-sm text-gray-400 mt-1">
-                                      {translations[def]}
-                                    </p>
+                                  ) : translations[def] ? (
+                                    translations[def]
+                                  ) : (
+                                    def
                                   )}
+                                </p>
                               </div>
                             ))}
                           </div>
