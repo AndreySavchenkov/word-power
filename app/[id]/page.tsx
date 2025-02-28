@@ -20,6 +20,10 @@ export default async function DeckPage({
     where: { email: session.user?.email || "" },
   });
 
+  if (!user) {
+    redirect("/");
+  }
+
   const deck = await prisma.deck.findUnique({
     where: { id: id },
     include: {
@@ -29,7 +33,7 @@ export default async function DeckPage({
             include: {
               userProgress: {
                 where: {
-                  userId: user?.id,
+                  userId: user.id,
                 },
               },
             },
@@ -40,10 +44,6 @@ export default async function DeckPage({
   });
 
   if (!deck) {
-    redirect("/decks");
-  }
-
-  if (!user || deck.userId !== user.id) {
     redirect("/decks");
   }
 

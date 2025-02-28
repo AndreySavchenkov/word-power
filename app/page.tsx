@@ -10,14 +10,7 @@ export default async function DecksPage() {
     redirect("/api/auth/signin");
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user?.email || "" },
-  });
-
   const decks = await prisma.deck.findMany({
-    where: {
-      userId: user?.id || "",
-    },
     include: {
       _count: {
         select: { words: true },
