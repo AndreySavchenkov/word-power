@@ -150,6 +150,10 @@ export const WordCard = ({
     "none" | "left" | "right"
   >("none");
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const [loadingTranslations, setLoadingTranslations] = useState<
+    Record<string, boolean>
+  >({});
 
   // const parseYouTubeUrl = (url: string): VideoParams | null => {
   //   try {
@@ -171,12 +175,13 @@ export const WordCard = ({
   // };
 
   const handleClick = (e: React.MouseEvent) => {
+    // Проверяем, был ли клик по переводимому элементу
     const target = e.target as HTMLElement;
-    const isInteractive = target.closest("iframe, .speakable-text");
-
-    if (!isInteractive) {
-      setIsFlipped(!isFlipped);
+    if (target.closest(".translatable")) {
+      return;
     }
+
+    setIsFlipped(!isFlipped);
   };
 
   const handleRecallLevel = async (levelId: number) => {
@@ -206,6 +211,40 @@ export const WordCard = ({
     }
   };
 
+  const translateDefinition = async (text: string) => {
+    // Если перевод уже существует, не делаем повторный запрос
+    if (translations[text]) {
+      return;
+    }
+
+    try {
+      setLoadingTranslations((prev) => ({ ...prev, [text]: true }));
+
+      const response = await fetch("/api/user/language/current");
+      const { language } = await response.json();
+
+      if (language === "en_US") {
+        setLoadingTranslations((prev) => ({ ...prev, [text]: false }));
+        return;
+      }
+
+      const translateResponse = await fetch("/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (translateResponse.ok) {
+        const { translation } = await translateResponse.json();
+        setTranslations((prev) => ({ ...prev, [text]: translation }));
+      }
+    } catch (error) {
+      console.error("Ошибка перевода:", error);
+    } finally {
+      setLoadingTranslations((prev) => ({ ...prev, [text]: false }));
+    }
+  };
+
   return (
     <>
       <div className="card-container w-full max-w-2xl">
@@ -231,7 +270,7 @@ export const WordCard = ({
                 <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-4 sm:p-6 flex items-center justify-center">
                   <SpeakableText
                     text={word.eng}
-                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-100 speakable-text text-center break-words max-w-full px-4"
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-100 speakable-text text-center break-words max-w-full px-4 translatable"
                     style={{
                       wordBreak: "break-word",
                       overflowWrap: "break-word",
@@ -300,7 +339,7 @@ export const WordCard = ({
                               <div className="flex items-center justify-between mb-2">
                                 <SpeakableText
                                   text={word.eng}
-                                  className="text-2xl font-bold text-white speakable-text"
+                                  className="text-2xl font-bold text-white speakable-text translatable"
                                 />
                                 <div className="flex items-center gap-2">
                                   <LevelBadge level={word.level || ""} />
@@ -321,7 +360,7 @@ export const WordCard = ({
                           <div className="flex items-center justify-between gap-2 mb-2">
                             <SpeakableText
                               text={word.eng}
-                              className="text-3xl font-bold text-gray-100 speakable-text"
+                              className="text-3xl font-bold text-gray-100 speakable-text translatable"
                             />
                             <div className="flex items-center gap-2">
                               <LevelBadge level={word.level || ""} />
@@ -348,9 +387,27 @@ export const WordCard = ({
                           </div>
                           <div className="space-y-2">
                             {word.definition.map((def, index) => (
-                              <p key={index} className="text-gray-300 text-md">
-                                • {def}
-                              </p>
+                              <div
+                                key={index}
+                                className="mb-2 cursor-pointer translatable"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  translateDefinition(def);
+                                }}
+                              >
+                                <p className="text-gray-200">{def}</p>
+                                {loadingTranslations[def] && (
+                                  <p className="text-sm text-gray-400 mt-1">
+                                    <span className="loading-dots">...</span>
+                                  </p>
+                                )}
+                                {!loadingTranslations[def] &&
+                                  translations[def] && (
+                                    <p className="text-sm text-gray-400 mt-1">
+                                      {translations[def]}
+                                    </p>
+                                  )}
+                              </div>
                             ))}
                           </div>
                         </div>
@@ -361,7 +418,8 @@ export const WordCard = ({
                           {word.examples.map((example, index) => (
                             <div
                               key={index}
-                              className="flex items-center gap-2 text-gray-500"
+                              className="flex items-center gap-2 text-gray-500 translatable"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               <SpeakableText
                                 text={example}

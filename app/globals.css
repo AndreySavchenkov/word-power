@@ -80,3 +80,23 @@ body {
     height: calc(100vh - 12rem);
   }
 }
+
+.loading-dots {
+  animation: loading 1.4s infinite;
+  display: inline-block;
+}
+
+@keyframes loading {
+  0%,
+  20% {
+    content: ".";
+  }
+  40%,
+  60% {
+    content: "..";
+  }
+  80%,
+  100% {
+    content: "...";
+  }
+}
