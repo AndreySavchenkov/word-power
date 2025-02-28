@@ -61,7 +61,7 @@ export const LanguageSelector = ({
 
   return (
     <div className="bg-slate-800 rounded-lg p-6">
-      <h3 className="text-xl font-bold text-gray-100 mb-4">Язык интерфейса</h3>
+      <h3 className="text-xl font-bold text-gray-100 mb-4">Translation Language:</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {Object.entries(languages).map(([code, { name, flag }]) => (
           <button
