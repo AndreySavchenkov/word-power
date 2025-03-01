@@ -255,23 +255,24 @@ export const WordCard = ({
       <div className="card-container w-full max-w-2xl">
         <div
           className={`
+            h-full
             transition-all duration-500 ease-in-out
             ${slideDirection === "left" ? "throw-left-up" : ""}
             ${slideDirection === "right" ? "throw-right-up" : ""}
           `}
         >
           <div
-            className="relative h-[450px] cursor-pointer perspective-1000"
+            className="relative h-full cursor-pointer perspective-1000"
             onClick={handleClick}
           >
             <div
               className={`
-                absolute w-full h-full transition-transform duration-500 transform-style-3d
+                absolute inset-0 transition-transform duration-500 transform-style-3d
                 ${isFlipped ? "rotate-y-180" : ""}
               `}
             >
               {/* Передняя сторона */}
-              <div className="absolute w-full h-full backface-hidden">
+              <div className="absolute inset-0 backface-hidden">
                 <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-4 sm:p-6 flex items-center justify-center">
                   <SpeakableText
                     text={word.eng}
@@ -287,7 +288,7 @@ export const WordCard = ({
               </div>
 
               {/* Задняя сторона */}
-              <div className="absolute w-full h-full backface-hidden rotate-y-180">
+              <div className="absolute inset-0 backface-hidden rotate-y-180">
                 <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-2 sm:p-6 overflow-y-auto">
                   <div className="h-full flex flex-col">
                     {/* Верхняя секция */}
