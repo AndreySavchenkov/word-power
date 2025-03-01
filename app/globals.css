@@ -49,7 +49,7 @@ body {
 
 .buttons-container {
   position: fixed;
-  bottom: 1rem;
+  bottom: 2rem;
   left: 0;
   right: 0;
   z-index: 40;
@@ -77,7 +77,7 @@ body {
 
 @media (max-width: 639px) {
   .card-container {
-    top: 50%;
+    top: 46%;
     transform: translate(-50%, -50%);
     height: calc(100vh - 14rem);
   }

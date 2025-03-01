@@ -294,7 +294,7 @@ export const WordCard = ({
                     {/* Верхняя секция */}
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
                       {/* Левая колонка с изображением */}
-                      <div className="w-full sm:w-1/3 relative h-[200px] sm:h-auto">
+                      <div className="w-full sm:w-1/3 relative h-[300px] sm:h-auto">
                         {word.imgUrl ? (
                           <>
                             {isImageLoading && (
