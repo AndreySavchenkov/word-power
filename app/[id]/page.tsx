@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { DeckPageClient } from "./DeckPageClient";
+import { getLevelWeight } from "@/app/utils/levelWeight";
 
 export default async function DeckPage({
   params,
@@ -49,11 +50,18 @@ export default async function DeckPage({
 
   // Преобразуем данные для сортировки
   const sortedWords = deck?.words.sort((a, b) => {
-    // Если у слова нет прогресса (не изучено), оно должно быть первым
+    // Сначала сортируем по уровню
+    const levelWeightA = getLevelWeight(a.word.level);
+    const levelWeightB = getLevelWeight(b.word.level);
+
+    if (levelWeightA !== levelWeightB) {
+      return levelWeightA - levelWeightB;
+    }
+
+    // Если уровни одинаковые, сортируем по силе запоминания
     if (!a.word.userProgress[0] && b.word.userProgress[0]) return -1;
     if (a.word.userProgress[0] && !b.word.userProgress[0]) return 1;
 
-    // Если оба слова имеют прогресс, сортируем по силе запоминания
     if (a.word.userProgress[0] && b.word.userProgress[0]) {
       return (
         (a.word.userProgress[0].strength || 0) -
@@ -61,7 +69,6 @@ export default async function DeckPage({
       );
     }
 
-    // Если оба слова не имеют прогресса, сохраняем исходный порядок
     return a.order - b.order;
   });
 

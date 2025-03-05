@@ -43,6 +43,16 @@ export default async function ReviewPage() {
         },
       },
     },
+    orderBy: [
+      {
+        word: {
+          level: "asc",
+        },
+      },
+      {
+        strength: "asc",
+      },
+    ],
   });
 
   // Преобразуем данные в нужный формат
