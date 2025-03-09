@@ -294,7 +294,7 @@ export const WordCard = ({
                     {/* Верхняя секция */}
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
                       {/* Левая колонка с изображением */}
-                      <div className="w-full sm:w-1/3 relative h-[200px] sm:h-auto">
+                      <div className="w-full sm:w-1/2  relative h-[200px] sm:h-[300px]">
                         {word.imgUrl ? (
                           <>
                             {isImageLoading && (
@@ -361,7 +361,7 @@ export const WordCard = ({
                       </div>
 
                       {/* Правая колонка с информацией */}
-                      <div className="w-full sm:w-2/3 flex flex-col">
+                      <div className="w-full sm:w-1/2 flex flex-col">
                         <div className="hidden sm:block mb-4">
                           <div className="flex items-center justify-between gap-2 mb-2">
                             <SpeakableText

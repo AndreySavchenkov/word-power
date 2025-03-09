@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { DeckPageClient } from "./DeckPageClient";
+import { DeckPageClient } from "./components/DeckPageClient";
 import { getLevelWeight } from "@/app/utils/levelWeight";
 
 export default async function DeckPage({
