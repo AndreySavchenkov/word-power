@@ -10,19 +10,14 @@ export default async function DeckPage({
   params: Promise<{ id: string }>;
 }) {
   const session = await getServerSession();
-
   const id = (await params).id;
+  const isAuthenticated = !!session?.user;
 
-  if (!session?.user) {
-    redirect("/api/auth/signin");
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user?.email || "" },
-  });
-
-  if (!user) {
-    redirect("/");
+  let user = null;
+  if (isAuthenticated) {
+    user = await prisma.user.findUnique({
+      where: { email: session.user?.email || "" },
+    });
   }
 
   const deck = await prisma.deck.findUnique({
@@ -32,11 +27,13 @@ export default async function DeckPage({
         include: {
           word: {
             include: {
-              userProgress: {
-                where: {
-                  userId: user.id,
-                },
-              },
+              userProgress: user
+                ? {
+                    where: {
+                      userId: user.id,
+                    },
+                  }
+                : undefined,
             },
           },
         },
@@ -59,10 +56,10 @@ export default async function DeckPage({
     }
 
     // Если уровни одинаковые, сортируем по силе запоминания
-    if (!a.word.userProgress[0] && b.word.userProgress[0]) return -1;
-    if (a.word.userProgress[0] && !b.word.userProgress[0]) return 1;
+    if (!a.word.userProgress?.[0] && b.word.userProgress?.[0]) return -1;
+    if (a.word.userProgress?.[0] && !b.word.userProgress?.[0]) return 1;
 
-    if (a.word.userProgress[0] && b.word.userProgress[0]) {
+    if (a.word.userProgress?.[0] && b.word.userProgress?.[0]) {
       return (
         (a.word.userProgress[0].strength || 0) -
         (b.word.userProgress[0].strength || 0)
@@ -77,5 +74,5 @@ export default async function DeckPage({
     deck.words = sortedWords;
   }
 
-  return <DeckPageClient deck={deck} />;
+  return <DeckPageClient deck={deck} isAuthenticated={isAuthenticated} />;
 }

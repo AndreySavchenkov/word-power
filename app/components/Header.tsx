@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import AuthButton from "./AuthButton";
 import Link from "next/link";
-import { useReviewCount } from "../contexts/ReviewCountContext";
 import logoImg from "@/public/icons/logo.png";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useReviewCount } from "../contexts/ReviewCountContext";
+import { usePathname } from "next/navigation";
 
 const Logo = () => (
   <div className="flex items-center gap-2">
@@ -18,14 +20,28 @@ const Logo = () => (
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { data: session, status } = useSession();
   const { reviewCount, setReviewCount } = useReviewCount();
+  const isAuthenticated = status === "authenticated";
+  const pathname = usePathname();
+
+  const isActive = (path: string) => pathname === path;
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchReviewCount = async () => {
+      if (!isAuthenticated) return;
+
       try {
         const response = await fetch("/api/progress/count");
         if (response.ok) {
@@ -37,15 +53,13 @@ export const Header = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    fetchReviewCount();
-    const interval = setInterval(fetchReviewCount, 60000);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearInterval(interval);
-    };
-  }, [setReviewCount]);
+    if (status !== "loading") {
+      fetchReviewCount();
+      // Обновляем каждую минуту
+      const interval = setInterval(fetchReviewCount, 60000);
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated, status, setReviewCount]);
 
   return (
     <header
@@ -56,24 +70,34 @@ export const Header = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12 sm:h-16">
-          <Link href="/">
-            <Logo />
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/review"
-              className="text-xs sm:text-sm text-gray-300 hover:text-white transition-colors flex items-center gap-2"
-            >
-              Review
-              {reviewCount > 0 && (
-                <span className="inline-flex items-center justify-center px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                  {reviewCount}
-                </span>
-              )}
+        <div className="flex items-center h-12 sm:h-16">
+          <div className="w-1/4">
+            <Link href="/">
+              <Logo />
             </Link>
-          </nav>
-          <AuthButton />
+          </div>
+          <div className="flex-1 flex justify-center">
+            {isAuthenticated && (
+              <Link
+                href="/review"
+                className={`text-sm font-medium transition-colors flex items-center gap-2 ${
+                  isActive("/review")
+                    ? "text-white"
+                    : "text-gray-300 hover:text-white"
+                }`}
+              >
+                Review
+                {reviewCount > 0 && (
+                  <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                    {reviewCount}
+                  </span>
+                )}
+              </Link>
+            )}
+          </div>
+          <div className="w-1/4 flex justify-end">
+            <AuthButton />
+          </div>
         </div>
       </div>
     </header>

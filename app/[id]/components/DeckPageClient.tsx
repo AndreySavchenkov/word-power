@@ -17,9 +17,10 @@ type DeckWithWords = Deck & {
 
 interface DeckPageClientProps {
   deck: DeckWithWords;
+  isAuthenticated: boolean;
 }
 
-export function DeckPageClient({ deck }: DeckPageClientProps) {
+export function DeckPageClient({ deck, isAuthenticated }: DeckPageClientProps) {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -147,6 +148,7 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
               <RecallButtons
                 onProgress={handleProgress}
                 showSkipButton={true}
+                isAuthenticated={isAuthenticated}
               />
             </>
           ) : (
@@ -162,10 +164,12 @@ export function DeckPageClient({ deck }: DeckPageClientProps) {
                 }}
                 deckId={deck.id}
                 strength={wordProgress?.strength}
+                isAuthenticated={isAuthenticated}
               />
               <RecallButtons
                 onProgress={handleProgress}
                 showSkipButton={true}
+                isAuthenticated={isAuthenticated}
               />
             </>
           )}

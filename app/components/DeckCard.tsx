@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { LevelBadge } from "./LevelBadge";
 
@@ -10,6 +12,7 @@ interface DeckProps {
     level: string;
     wordsCount?: number;
   };
+  isAuthenticated: boolean;
 }
 
 export const DeckCard = ({ deck }: DeckProps) => {

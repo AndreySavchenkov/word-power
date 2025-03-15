@@ -19,10 +19,12 @@ type WordToReview = UserWordProgress & {
 
 interface ReviewPageClientProps {
   words: WordToReview[];
+  isAuthenticated: boolean;
 }
 
 export function ReviewPageClient({
   words: initialWords,
+  isAuthenticated,
 }: ReviewPageClientProps) {
   const [words, setWords] = useState(initialWords);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -77,6 +79,7 @@ export function ReviewPageClient({
               <RecallButtons
                 onProgress={handleProgress}
                 isTransitioning={isTransitioning}
+                isAuthenticated={isAuthenticated}
               />
             </>
           ) : (
@@ -86,10 +89,12 @@ export function ReviewPageClient({
                 word={currentWord.word}
                 deckId={currentWord.deck.id}
                 strength={currentWord.strength}
+                isAuthenticated={isAuthenticated}
               />
               <RecallButtons
                 onProgress={handleProgress}
                 isTransitioning={isTransitioning}
+                isAuthenticated={isAuthenticated}
               />
             </>
           )}

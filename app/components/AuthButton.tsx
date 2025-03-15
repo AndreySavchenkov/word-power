@@ -5,15 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function AuthButton() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
-  if (session) {
+  if (status === "loading") {
+    return null;
+  }
+
+  if (session?.user) {
     return (
-      <div className="flex items-center gap-2">
-        {session?.user?.image && (
+      <div className="flex items-center">
+        {session.user.image && (
           <Link href="/profile">
             <Image
-              src={session?.user?.image}
+              src={session.user.image}
               alt="user"
               className="rounded-full w-6 h-6 sm:w-8 sm:h-8"
               width={32}
@@ -24,6 +28,7 @@ export default function AuthButton() {
       </div>
     );
   }
+
   return (
     <button
       onClick={() => signIn("google")}

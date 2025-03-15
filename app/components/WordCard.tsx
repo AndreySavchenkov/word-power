@@ -6,6 +6,7 @@ import { useSpeech } from "../hooks/useSpeech";
 import { LevelBadge } from "./LevelBadge";
 import { ProgressCircle } from "./ProgressCircle";
 import { PartOfSpeech } from "@prisma/client";
+import { signIn } from "next-auth/react";
 
 interface Word {
   id: string;
@@ -83,6 +84,7 @@ interface WordCardProps {
   onProgress?: () => void;
   strength?: number;
   showSkipButton?: boolean;
+  isAuthenticated?: boolean;
 }
 
 const partOfSpeechStyles = {
@@ -154,6 +156,7 @@ export const WordCard = ({
   onProgress,
   strength,
   showSkipButton,
+  isAuthenticated = false,
 }: WordCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const { SpeakableText } = useSpeech();
@@ -170,6 +173,9 @@ export const WordCard = ({
 
   useEffect(() => {
     const translateContent = async () => {
+      // Если пользователь не авторизован, не делаем перевод
+      if (!isAuthenticated) return;
+
       try {
         const response = await fetch("/api/user/language/current");
         const { language } = await response.json();
@@ -268,6 +274,11 @@ export const WordCard = ({
   };
 
   const handleRecallLevel = async (levelId: number) => {
+    if (!isAuthenticated) {
+      signIn("google");
+      return;
+    }
+
     setSelectedLevel(levelId);
     const direction = levelId >= 3 ? "right" : "left";
     setSlideDirection(direction);

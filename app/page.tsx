@@ -1,14 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { DeckCard } from "./components/DeckCard";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
 export default async function DecksPage() {
   const session = await getServerSession();
-
-  if (!session?.user) {
-    redirect("/api/auth/signin");
-  }
 
   const decks = await prisma.deck.findMany({
     include: {
@@ -30,6 +25,7 @@ export default async function DecksPage() {
                 description: deck.description || undefined,
                 wordsCount: deck._count.words,
               }}
+              isAuthenticated={!!session?.user}
             />
           ))}
         </div>

@@ -1,13 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { ReviewPageClient } from "./ReviewPageClient";
 
 export default async function ReviewPage() {
   const session = await getServerSession();
+  const isAuthenticated = !!session?.user;
 
-  if (!session?.user) {
-    redirect("/api/auth/signin");
+  if (!isAuthenticated) {
+    return <ReviewPageClient words={[]} isAuthenticated={isAuthenticated} />;
   }
 
   const user = await prisma.user.findUnique({
@@ -15,7 +15,7 @@ export default async function ReviewPage() {
   });
 
   if (!user) {
-    redirect("/");
+    return <ReviewPageClient words={[]} isAuthenticated={isAuthenticated} />;
   }
 
   const now = new Date();
@@ -64,5 +64,10 @@ export default async function ReviewPage() {
     },
   }));
 
-  return <ReviewPageClient words={formattedWords} />;
+  return (
+    <ReviewPageClient
+      words={formattedWords}
+      isAuthenticated={isAuthenticated}
+    />
+  );
 }
