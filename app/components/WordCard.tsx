@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSpeech } from "../hooks/useSpeech";
 import { LevelBadge } from "./LevelBadge";
@@ -154,6 +154,77 @@ export const WordCard = ({
   const [loadingTranslations, setLoadingTranslations] = useState<
     Record<string, boolean>
   >({});
+  const [wordTranslation, setWordTranslation] = useState<string>("");
+
+  useEffect(() => {
+    const translateContent = async () => {
+      try {
+        const response = await fetch("/api/user/language/current");
+        const { language } = await response.json();
+
+        // Если язык английский, не переводим
+        if (language === "en_US") return;
+
+        // Переводим слово
+        try {
+          const wordTranslateResponse = await fetch("/api/translate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              text: word.eng,
+              mode: "word",
+            }),
+          });
+
+          if (wordTranslateResponse.ok) {
+            const { translation } = await wordTranslateResponse.json();
+            setWordTranslation(translation);
+          }
+        } catch (error) {
+          console.error("Error translating word:", error);
+        }
+
+        // Переводим определения
+        for (const def of word.definition) {
+          setLoadingTranslations((prev) => ({ ...prev, [def]: true }));
+          try {
+            // Проверяем, является ли определение формой неправильного глагола
+            const irregularVerbPattern = /^[a-zA-Z]+ – [a-zA-Z]+ – [a-zA-Z]+$/;
+            if (irregularVerbPattern.test(def.trim())) {
+              // Если это форма неправильного глагола, сохраняем как есть без перевода
+              setTranslations((prev) => ({ ...prev, [def]: def }));
+              setLoadingTranslations((prev) => ({ ...prev, [def]: false }));
+              continue;
+            }
+
+            const translateResponse = await fetch("/api/translate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                text: def,
+                mode: "definition",
+              }),
+            });
+
+            if (translateResponse.ok) {
+              const { translation } = await translateResponse.json();
+              setTranslations((prev) => ({ ...prev, [def]: translation }));
+            }
+          } finally {
+            setLoadingTranslations((prev) => ({ ...prev, [def]: false }));
+          }
+        }
+      } catch (error) {
+        console.error("Ошибка при переводе:", error);
+      }
+    };
+
+    translateContent();
+  }, [word.eng, word.definition]);
 
   // const parseYouTubeUrl = (url: string): VideoParams | null => {
   //   try {
@@ -208,45 +279,6 @@ export const WordCard = ({
       }
     } catch (error) {
       console.error("Failed to save progress:", error);
-    }
-  };
-
-  const translateDefinition = async (text: string) => {
-    // Если перевод уже существует, переключаем обратно на оригинал
-    if (translations[text]) {
-      setTranslations((prev) => {
-        const newTranslations = { ...prev };
-        delete newTranslations[text];
-        return newTranslations;
-      });
-      return;
-    }
-
-    try {
-      setLoadingTranslations((prev) => ({ ...prev, [text]: true }));
-
-      const response = await fetch("/api/user/language/current");
-      const { language } = await response.json();
-
-      if (language === "en_US") {
-        setLoadingTranslations((prev) => ({ ...prev, [text]: false }));
-        return;
-      }
-
-      const translateResponse = await fetch("/api/translate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-
-      if (translateResponse.ok) {
-        const { translation } = await translateResponse.json();
-        setTranslations((prev) => ({ ...prev, [text]: translation }));
-      }
-    } catch (error) {
-      console.error("Ошибка перевода:", error);
-    } finally {
-      setLoadingTranslations((prev) => ({ ...prev, [text]: false }));
     }
   };
 
@@ -343,10 +375,17 @@ export const WordCard = ({
                           <div className="p-1">
                             <div className="bg-black bg-opacity-50 rounded-lg p-3">
                               <div className="flex items-center justify-between mb-2">
-                                <SpeakableText
-                                  text={word.eng}
-                                  className="text-2xl font-bold text-white speakable-text translatable"
-                                />
+                                <div className="flex flex-col">
+                                  <SpeakableText
+                                    text={word.eng}
+                                    className="text-2xl font-bold text-white speakable-text translatable"
+                                  />
+                                  {wordTranslation && (
+                                    <span className="text-base text-gray-300 mt-0.5">
+                                      {wordTranslation}
+                                    </span>
+                                  )}
+                                </div>
                                 <div className="flex items-center gap-2">
                                   <LevelBadge level={word.level || ""} />
                                   <ProgressCircle strength={strength || 0} />
@@ -364,10 +403,17 @@ export const WordCard = ({
                       <div className="w-full sm:w-1/2 flex flex-col">
                         <div className="hidden sm:block mb-4">
                           <div className="flex items-center justify-between gap-2 mb-2">
-                            <SpeakableText
-                              text={word.eng}
-                              className="text-3xl font-bold text-gray-100 speakable-text translatable"
-                            />
+                            <div className="flex flex-col">
+                              <SpeakableText
+                                text={word.eng}
+                                className="text-3xl font-bold text-gray-100 speakable-text translatable"
+                              />
+                              {wordTranslation && (
+                                <span className="text-lg text-gray-400 mt-1">
+                                  {wordTranslation}
+                                </span>
+                              )}
+                            </div>
                             <div className="flex items-center gap-2">
                               <LevelBadge level={word.level || ""} />
                               <ProgressCircle strength={strength || 0} />
@@ -393,21 +439,12 @@ export const WordCard = ({
                           </div>
                           <div className="space-y-2">
                             {word.definition.map((def, index) => (
-                              <div
-                                key={index}
-                                className="mb-2 cursor-pointer translatable"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  translateDefinition(def);
-                                }}
-                              >
+                              <div key={index} className="mb-2">
                                 <p className="text-gray-200">
                                   {loadingTranslations[def] ? (
                                     <span className="loading-dots">...</span>
-                                  ) : translations[def] ? (
-                                    translations[def]
                                   ) : (
-                                    def
+                                    translations[def] || def
                                   )}
                                 </p>
                               </div>

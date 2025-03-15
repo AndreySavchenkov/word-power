@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { text } = await request.json();
+    const { text, mode } = await request.json();
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
@@ -27,18 +27,23 @@ export async function POST(request: Request) {
     const response = await fetch(
       `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${
         user.language
-      }&dt=t&dt=at&dt=rm&dt=bd&q=${encodeURIComponent(text)}`
+      }&dt=t&q=${encodeURIComponent(text)}`
     );
+
     const data = await response.json();
 
-    let translation = data[0][0][0];
+    // Для одиночного слова берем первый перевод
+    if (mode === "word") {
+      const translation = data[0][0][0];
+      return NextResponse.json({ translation });
+    }
 
-    // Если есть альтернативные переводы, выбираем наиболее подходящий
+    // Для определений оставляем текущую логику
+    let translation = data[0][0][0];
     if (data[1]) {
       const alternatives = data[1].map(
         (item: [string, ...unknown[]]) => item[0]
       );
-      // Выбираем самый длинный перевод как наиболее контекстный
       const contextualTranslation = alternatives.reduce(
         (a: string, b: string) => (a.length > b.length ? a : b)
       );
