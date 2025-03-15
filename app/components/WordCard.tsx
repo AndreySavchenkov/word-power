@@ -136,6 +136,18 @@ const skipButtonStyle = {
   hoverBgColor: "hover:bg-slate-600",
 } as const;
 
+// Добавим функцию для определения цвета фона
+const getBackgroundColor = (strength?: number) => {
+  if (!strength) return "bg-slate-800"; // Дефолтный цвет если слово не изучалось
+
+  if (strength === 1) return "bg-gradient-to-br from-red-900 to-slate-800";
+  if (strength === 2) return "bg-gradient-to-br from-orange-900 to-slate-800";
+  if (strength === 3) return "bg-gradient-to-br from-yellow-900 to-slate-800";
+  if (strength === 4) return "bg-gradient-to-br from-green-900 to-slate-800";
+
+  return "bg-slate-800";
+};
+
 export const WordCard = ({
   word,
   deckId,
@@ -305,7 +317,11 @@ export const WordCard = ({
             >
               {/* Передняя сторона */}
               <div className="absolute inset-0 backface-hidden">
-                <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-4 sm:p-6 flex items-center justify-center">
+                <div
+                  className={`w-full h-full ${getBackgroundColor(
+                    strength
+                  )} rounded-lg shadow-xl p-4 sm:p-6 flex items-center justify-center`}
+                >
                   <SpeakableText
                     text={word.eng}
                     className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-100 speakable-text text-center break-words max-w-full px-4 translatable"
@@ -321,7 +337,11 @@ export const WordCard = ({
 
               {/* Задняя сторона */}
               <div className="absolute inset-0 backface-hidden rotate-y-180">
-                <div className="w-full h-full bg-slate-800 rounded-lg shadow-xl p-2 sm:p-6 overflow-y-auto">
+                <div
+                  className={`w-full h-full ${getBackgroundColor(
+                    strength
+                  )} rounded-lg shadow-xl p-2 sm:p-6 overflow-y-auto`}
+                >
                   <div className="h-full flex flex-col">
                     {/* Верхняя секция */}
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
