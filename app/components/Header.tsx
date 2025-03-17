@@ -25,6 +25,9 @@ export const Header = () => {
   const isAuthenticated = status === "authenticated";
   const pathname = usePathname();
 
+  //TDO: delete later
+  console.log(`session: ${session}`);
+
   const isActive = (path: string) => pathname === path;
 
   useEffect(() => {

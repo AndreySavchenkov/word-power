@@ -242,7 +242,7 @@ export const WordCard = ({
     };
 
     translateContent();
-  }, [word.eng, word.definition]);
+  }, [word.eng, word.definition, isAuthenticated]);
 
   // const parseYouTubeUrl = (url: string): VideoParams | null => {
   //   try {
