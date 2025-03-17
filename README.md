@@ -33,7 +33,7 @@
 #### Front Side
 
 - Word with pronunciation feature
-  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Card Front Side">
+<img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Card Front Side">
 
 #### Back Side
 
