@@ -11,8 +11,8 @@
 - Прагляд дошак са словамі
 - Магчымасць праглядаць словы, выкарыстоўваючы кнопку "Skip"
 
-<img src="https://github.com/user-attachments/assets/13cb2370-4acb-4758-91c6-d4f54fcc88cd" width="400" alt="Дошкі са словамі">
-<img src="https://github.com/user-attachments/assets/3b80d1bc-3529-4b6b-b446-e55dd30d9274" width="400" alt="Прагляд слоў">
+<img src="https://github.com/user-attachments/assets/13cb2370-4acb-4758-91c6-d4f54fcc88cd" width="200" alt="Дошкі са словамі">
+<img src="https://github.com/user-attachments/assets/3b80d1bc-3529-4b6b-b446-e55dd30d9274" width="200" alt="Прагляд слоў">
 
 ### Для аўтарызаваных карыстальнікаў
 
@@ -25,15 +25,15 @@
 - Сістэма інтэрвальнага паўтарэння
 - Сартаванне слоў па ўзроўню вывучанасці з каляровай індыкацыяй
 
-<img src="https://github.com/user-attachments/assets/df5c97a7-fb2b-4904-bfcf-0437aabbdae2" width="400" alt="Сартаванне слоў">
-<img src="https://github.com/user-attachments/assets/8dacf105-e5ff-4485-90d1-c1a3ae6dc38a" width="400" alt="Узроўні вывучанасці">
+<img src="https://github.com/user-attachments/assets/df5c97a7-fb2b-4904-bfcf-0437aabbdae2" width="200" alt="Сартаванне слоў">
+<img src="https://github.com/user-attachments/assets/8dacf105-e5ff-4485-90d1-c1a3ae6dc38a" width="200" alt="Узроўні вывучанасці">
 
 ### Карткі слоў
 
 #### Пярэдні бок
 
 - Слова з магчымасцю праслухоўвання вымаўлення
-  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="300" alt="Пярэдні бок карткі">
+  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Пярэдні бок карткі">
 
 #### Адваротны бок
 
@@ -45,7 +45,7 @@
 - Азначэнні
 - Прыклады выкарыстання з агучваннем
 
-<img src="https://github.com/user-attachments/assets/3cc9dd9e-350b-49d9-8c1a-0889b69e0cf6" width="400" alt="Адваротны бок карткі">
+<img src="https://github.com/user-attachments/assets/3cc9dd9e-350b-49d9-8c1a-0889b69e0cf6" width="200" alt="Адваротны бок карткі">
 
 ### Профіль карыстальніка
 
@@ -54,12 +54,12 @@
 - Налады мовы інтэрфейсу і перакладаў
 - Аўтаматычны пераклад азначэнняў і прыкладаў
 
-<img src="https://github.com/user-attachments/assets/79b2b571-1742-4738-8442-cb45c48be53d" width="400" alt="Профіль карыстальніка">
+<img src="https://github.com/user-attachments/assets/79b2b571-1742-4738-8442-cb45c48be53d" width="200" alt="Профіль карыстальніка">
 
 ### Шматмоўнасць
 
 Падтрымка розных моў для перакладу:
 
-<img src="https://github.com/user-attachments/assets/e85d2ea5-c3e1-42aa-886f-c6c798499cae" width="300" alt="Прыклад 1">
-<img src="https://github.com/user-attachments/assets/96922beb-6b0f-402d-8934-c7d2f265f890" width="300" alt="Прыклад 2">
-<img src="https://github.com/user-attachments/assets/3c936a35-bf21-4170-b8f0-759dd108631a" width="300" alt="Прыклад 3">
+<img src="https://github.com/user-attachments/assets/e85d2ea5-c3e1-42aa-886f-c6c798499cae" width="150" alt="Прыклад 1">
+<img src="https://github.com/user-attachments/assets/96922beb-6b0f-402d-8934-c7d2f265f890" width="150" alt="Прыклад 2">
+<img src="https://github.com/user-attachments/assets/3c936a35-bf21-4170-b8f0-759dd108631a" width="150" alt="Прыклад 3">

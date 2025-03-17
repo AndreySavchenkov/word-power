@@ -11,8 +11,8 @@
 - Przeglądanie tablic ze słowami
 - Możliwość przeglądania słów za pomocą przycisku "Skip"
 
-<img src="https://github.com/user-attachments/assets/13cb2370-4acb-4758-91c6-d4f54fcc88cd" width="400" alt="Tablice ze słowami">
-<img src="https://github.com/user-attachments/assets/3b80d1bc-3529-4b6b-b446-e55dd30d9274" width="400" alt="Przeglądanie słów">
+<img src="https://github.com/user-attachments/assets/13cb2370-4acb-4758-91c6-d4f54fcc88cd" width="200" alt="Tablice ze słowami">
+<img src="https://github.com/user-attachments/assets/3b80d1bc-3529-4b6b-b446-e55dd30d9274" width="200" alt="Przeglądanie słów">
 
 ### Dla użytkowników zalogowanych
 
@@ -25,15 +25,15 @@
 - System powtórek interwałowych
 - Sortowanie słów według poziomu opanowania z oznaczeniem kolorystycznym
 
-<img src="https://github.com/user-attachments/assets/df5c97a7-fb2b-4904-bfcf-0437aabbdae2" width="400" alt="Sortowanie słów">
-<img src="https://github.com/user-attachments/assets/8dacf105-e5ff-4485-90d1-c1a3ae6dc38a" width="400" alt="Poziomy opanowania">
+<img src="https://github.com/user-attachments/assets/df5c97a7-fb2b-4904-bfcf-0437aabbdae2" width="200" alt="Sortowanie słów">
+<img src="https://github.com/user-attachments/assets/8dacf105-e5ff-4485-90d1-c1a3ae6dc38a" width="200" alt="Poziomy opanowania">
 
 ### Karty słów
 
 #### Przód karty
 
 - Słowo z możliwością odsłuchania wymowy
-  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="300" alt="Przód karty">
+  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Przód karty">
 
 #### Tył karty
 
@@ -45,7 +45,7 @@
 - Definicje
 - Przykłady użycia z dźwiękiem
 
-<img src="https://github.com/user-attachments/assets/3cc9dd9e-350b-49d9-8c1a-0889b69e0cf6" width="400" alt="Tył karty">
+<img src="https://github.com/user-attachments/assets/3cc9dd9e-350b-49d9-8c1a-0889b69e0cf6" width="200" alt="Tył karty">
 
 ### Profil użytkownika
 
@@ -54,12 +54,12 @@
 - Ustawienia języka interfejsu i tłumaczeń
 - Automatyczne tłumaczenie definicji i przykładów
 
-<img src="https://github.com/user-attachments/assets/79b2b571-1742-4738-8442-cb45c48be53d" width="400" alt="Profil użytkownika">
+<img src="https://github.com/user-attachments/assets/79b2b571-1742-4738-8442-cb45c48be53d" width="200" alt="Profil użytkownika">
 
 ### Wsparcie wielojęzyczne
 
 Obsługa różnych języków do tłumaczenia:
 
-<img src="https://github.com/user-attachments/assets/e85d2ea5-c3e1-42aa-886f-c6c798499cae" width="300" alt="Przykład 1">
-<img src="https://github.com/user-attachments/assets/96922beb-6b0f-402d-8934-c7d2f265f890" width="300" alt="Przykład 2">
-<img src="https://github.com/user-attachments/assets/3c936a35-bf21-4170-b8f0-759dd108631a" width="300" alt="Przykład 3">
+<img src="https://github.com/user-attachments/assets/e85d2ea5-c3e1-42aa-886f-c6c798499cae" width="150" alt="Przykład 1">
+<img src="https://github.com/user-attachments/assets/96922beb-6b0f-402d-8934-c7d2f265f890" width="150" alt="Przykład 2">
+<img src="https://github.com/user-attachments/assets/3c936a35-bf21-4170-b8f0-759dd108631a" width="150" alt="Przykład 3">
