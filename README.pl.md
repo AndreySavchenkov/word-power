@@ -33,7 +33,7 @@
 #### Przód karty
 
 - Słowo z możliwością odsłuchania wymowy
-  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Przód karty">
+<img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Przód karty">
 
 #### Tył karty
 

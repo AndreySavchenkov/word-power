@@ -33,7 +33,7 @@
 #### Пярэдні бок
 
 - Слова з магчымасцю праслухоўвання вымаўлення
-  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Пярэдні бок карткі">
+<img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Пярэдні бок карткі">
 
 #### Адваротны бок
 

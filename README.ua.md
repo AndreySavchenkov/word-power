@@ -33,7 +33,7 @@
 #### Лицьова сторона
 
 - Слово з можливістю прослуховування вимови
-  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Лицьова сторона картки">
+<img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Лицьова сторона картки">
 
 #### Зворотна сторона
 
