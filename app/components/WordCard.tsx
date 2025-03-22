@@ -540,11 +540,12 @@ export const WordCard = ({
         <div className="max-w-2xl mx-auto px-4">
           <div className="flex flex-col gap-3">
             <div className="flex justify-center gap-3">
-              {recallLevels.map((level) => (
-                <button
-                  key={level.id}
-                  onClick={() => handleRecallLevel(level.id)}
-                  className={`
+              {isAuthenticated &&
+                recallLevels.map((level) => (
+                  <button
+                    key={level.id}
+                    onClick={() => handleRecallLevel(level.id)}
+                    className={`
                     px-3 py-3 rounded-xl text-sm font-medium
                     transform transition-all duration-200
                     ${level.bgColor} ${level.color} ${level.hoverBgColor}
@@ -555,10 +556,10 @@ export const WordCard = ({
                         : ""
                     }
                   `}
-                >
-                  {level.label}
-                </button>
-              ))}
+                  >
+                    {level.label}
+                  </button>
+                ))}
             </div>
             {showSkipButton && (
               <div className="flex justify-center">
