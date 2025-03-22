@@ -42,7 +42,7 @@ export default async function DeckPage({
   });
 
   if (!deck) {
-    redirect("/decks");
+    redirect("/");
   }
 
   // Преобразуем данные для сортировки
