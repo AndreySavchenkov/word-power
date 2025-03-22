@@ -1,5 +1,3 @@
-import { signIn } from "next-auth/react";
-
 interface RecallButtonsProps {
   onProgress: (levelId?: number) => void;
   showSkipButton?: boolean;
@@ -45,7 +43,6 @@ export const RecallButtons = ({
 
   const handleClick = (levelId?: number) => {
     if (levelId !== undefined && !isAuthenticated) {
-      signIn("google");
       return;
     }
     onProgress(levelId);
@@ -55,22 +52,24 @@ export const RecallButtons = ({
     <div className="buttons-container">
       <div className="max-w-2xl mx-auto px-4">
         <div className="flex flex-col gap-3">
-          <div className="flex justify-center gap-3">
-            {recallLevels.map((level) => (
-              <button
-                key={level.id}
-                onClick={() => handleClick(level.id)}
-                className={`
+          {isAuthenticated && (
+            <div className="flex justify-center gap-3">
+              {recallLevels.map((level) => (
+                <button
+                  key={level.id}
+                  onClick={() => handleClick(level.id)}
+                  className={`
                   px-3 py-3 rounded-xl text-sm font-medium
                   transform transition-all duration-200
                   ${level.bgColor} ${level.color} ${level.hoverBgColor}
                   hover:scale-105 active:scale-95 shadow-lg
                 `}
-              >
-                {level.label}
-              </button>
-            ))}
-          </div>
+                >
+                  {level.label}
+                </button>
+              ))}
+            </div>
+          )}
           {showSkipButton && (
             <div className="flex justify-center">
               <button

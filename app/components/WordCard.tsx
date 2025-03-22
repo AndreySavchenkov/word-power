@@ -6,7 +6,6 @@ import { useSpeech } from "../hooks/useSpeech";
 import { LevelBadge } from "./LevelBadge";
 import { ProgressCircle } from "./ProgressCircle";
 import { PartOfSpeech } from "@prisma/client";
-import { signIn } from "next-auth/react";
 
 interface Word {
   id: string;
@@ -25,45 +24,6 @@ interface Word {
 //   start?: string;
 //   end?: string;
 // }
-
-interface RecallLevel {
-  id: number;
-  label: string;
-  color: string;
-  bgColor: string;
-  hoverBgColor: string;
-}
-
-const recallLevels: RecallLevel[] = [
-  {
-    id: 1,
-    label: "Don't know",
-    color: "text-red-100",
-    bgColor: "bg-red-700",
-    hoverBgColor: "hover:bg-red-600",
-  },
-  {
-    id: 2,
-    label: "Hard",
-    color: "text-orange-100",
-    bgColor: "bg-orange-700",
-    hoverBgColor: "hover:bg-orange-600",
-  },
-  {
-    id: 3,
-    label: "Good",
-    color: "text-yellow-100",
-    bgColor: "bg-yellow-700",
-    hoverBgColor: "hover:bg-yellow-600",
-  },
-  {
-    id: 4,
-    label: "Easy",
-    color: "text-green-100",
-    bgColor: "bg-green-700",
-    hoverBgColor: "hover:bg-green-600",
-  },
-];
 
 interface WordCardProps {
   word: {
@@ -130,14 +90,6 @@ const partOfSpeechStyles = {
   },
 } as const;
 
-const skipButtonStyle = {
-  id: 0,
-  label: "Skip",
-  color: "text-slate-300",
-  bgColor: "bg-slate-700",
-  hoverBgColor: "hover:bg-slate-600",
-} as const;
-
 // Добавим функцию для определения цвета фона
 const getBackgroundColor = (strength?: number) => {
   if (!strength) return "bg-slate-800"; // Дефолтный цвет если слово не изучалось
@@ -152,18 +104,11 @@ const getBackgroundColor = (strength?: number) => {
 
 export const WordCard = ({
   word,
-  deckId,
-  onProgress,
   strength,
-  showSkipButton,
   isAuthenticated = false,
 }: WordCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const { SpeakableText } = useSpeech();
-  const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
-  const [slideDirection, setSlideDirection] = useState<
-    "none" | "left" | "right"
-  >("none");
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [loadingTranslations, setLoadingTranslations] = useState<
@@ -273,38 +218,6 @@ export const WordCard = ({
     setIsFlipped(!isFlipped);
   };
 
-  const handleRecallLevel = async (levelId: number) => {
-    if (!isAuthenticated) {
-      signIn("google");
-      return;
-    }
-
-    setSelectedLevel(levelId);
-    const direction = levelId >= 3 ? "right" : "left";
-    setSlideDirection(direction);
-
-    try {
-      await fetch("/api/progress", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          wordId: word.id,
-          strength: levelId,
-          deckId: deckId,
-        }),
-      });
-
-      // Вызываем callback для обновления UI
-      if (onProgress) {
-        setTimeout(onProgress, 500);
-      }
-    } catch (error) {
-      console.error("Failed to save progress:", error);
-    }
-  };
-
   return (
     <>
       <div className="card-container w-full max-w-2xl">
@@ -312,8 +225,6 @@ export const WordCard = ({
           className={`
             h-full
             transition-all duration-500 ease-in-out
-            ${slideDirection === "left" ? "throw-left-up" : ""}
-            ${slideDirection === "right" ? "throw-right-up" : ""}
           `}
         >
           <div
@@ -531,52 +442,6 @@ export const WordCard = ({
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Кнопки уровня запоминания */}
-      <div className="buttons-container">
-        <div className="max-w-2xl mx-auto px-4">
-          <div className="flex flex-col gap-3">
-            <div className="flex justify-center gap-3">
-              {isAuthenticated &&
-                recallLevels.map((level) => (
-                  <button
-                    key={level.id}
-                    onClick={() => handleRecallLevel(level.id)}
-                    className={`
-                    px-3 py-3 rounded-xl text-sm font-medium
-                    transform transition-all duration-200
-                    ${level.bgColor} ${level.color} ${level.hoverBgColor}
-                    hover:scale-105 active:scale-95 shadow-lg
-                    ${
-                      selectedLevel === level.id
-                        ? "ring-2 ring-white ring-opacity-50"
-                        : ""
-                    }
-                  `}
-                  >
-                    {level.label}
-                  </button>
-                ))}
-            </div>
-            {showSkipButton && (
-              <div className="flex justify-center">
-                <button
-                  onClick={() => onProgress?.()}
-                  className={`
-                    px-3 py-[11px] rounded-xl text-sm font-medium w-full
-                    transform transition-all duration-200
-                    ${skipButtonStyle.bgColor} ${skipButtonStyle.color} ${skipButtonStyle.hoverBgColor}
-                    hover:scale-105 active:scale-95
-                    border border-slate-600
-                  `}
-                >
-                  {skipButtonStyle.label}
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
