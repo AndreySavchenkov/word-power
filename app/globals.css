@@ -37,16 +37,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.throw-left-up {
-  transform: translate(-200%, -200%) rotate(-45deg);
-  opacity: 0;
-}
-
-.throw-right-up {
-  transform: translate(200%, -200%) rotate(45deg);
-  opacity: 0;
-}
-
 .buttons-container {
   position: fixed;
   bottom: 0.5rem;
