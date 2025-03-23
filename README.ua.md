@@ -1,6 +1,6 @@
 # Word Power - Додаток для вивчення англійських слів
 
-[English](README.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Українська](README.ua.md) | [Беларуская](README.by.md)
+[English](README.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Українська](README.ua.md) | [Беларуская](README.by.md) | [हिन्दी](README.hi.md)
 
 [![Відвідати сайт](https://img.shields.io/badge/website-word--power-blue)](https://word-power-mu.vercel.app/)
 
@@ -33,7 +33,7 @@
 #### Лицьова сторона
 
 - Слово з можливістю прослуховування вимови
-<img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Лицьова сторона картки">
+  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Лицьова сторона картки">
 
 #### Зворотна сторона
 

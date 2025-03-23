@@ -89,6 +89,7 @@ enum Language {
   uk
   pl
   be
+  hi
 }
 
 model Word {

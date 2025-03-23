@@ -1,6 +1,6 @@
 # Word Power - Aplikacja do nauki słów angielskich
 
-[English](README.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Українська](README.ua.md) | [Беларуская](README.by.md)
+[English](README.md) | [Русский](README.ru.md) | [Polski](README.pl.md) | [Українська](README.ua.md) | [Беларуская](README.by.md) | [हिन्दी](README.hi.md)
 
 [![Odwiedź stronę](https://img.shields.io/badge/website-word--power-blue)](https://word-power-mu.vercel.app/)
 
@@ -33,7 +33,7 @@
 #### Przód karty
 
 - Słowo z możliwością odsłuchania wymowy
-<img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Przód karty">
+  <img src="https://github.com/user-attachments/assets/2cdf48c8-8cb2-4657-bd59-3034efd75a46" width="150" alt="Przód karty">
 
 #### Tył karty
 

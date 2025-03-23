@@ -36,6 +36,11 @@ const languages: Record<
     flag: "🇺🇦",
     nativeName: "Українська",
   },
+  hi: {
+    name: "Hindi",
+    flag: "🇮🇳",
+    nativeName: "हिन्दी",
+  },
 };
 
 export const LanguageSelector = ({
