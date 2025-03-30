@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 import { ReviewCountProvider } from "./contexts/ReviewCountContext";
 
 export const metadata: Metadata = {
@@ -65,13 +66,14 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className="bg-slate-900">
-        <ReviewCountProvider>
-          <Providers>
+      <body className="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 to-black">
+        <Providers>
+          <ReviewCountProvider>
             <Header />
-            <div>{children}</div>
-          </Providers>
-        </ReviewCountProvider>
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </ReviewCountProvider>
+        </Providers>
       </body>
     </html>
   );
