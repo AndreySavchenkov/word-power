@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { UserCard } from "@/app/components/UserCard";
 import { SignOutButton } from "@/app/components/SignOutButton";
 import { LanguageSelector } from "@/app/components/LanguageSelector";
+import { ActivityHeatmap } from "@/app/components/ActivityHeatmap";
 
 const transformUserData = (user: {
   name: string | null;
@@ -48,6 +49,8 @@ export default async function Profile() {
       redirect("/api/auth/signin");
     }
 
+    const timestamp = Date.now();
+
     const userStat = await prisma.user.findUnique({
       where: {
         email: session.user?.email || "",
@@ -80,10 +83,15 @@ export default async function Profile() {
 
     return (
       <div className={"my-auto max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"}>
-        <div className="flex flex-col pt-24 gap-4  p-2">
+        <div className="flex flex-col pt-24 gap-4 p-2">
           <h1 className="text-2xl font-bold text-gray-100">My Profile:</h1>
 
           <UserCard key={userStat.id} user={formattedUser} />
+
+          <ActivityHeatmap
+            key={`activity-${timestamp}`}
+            userProgress={userStat.UserWordProgress}
+          />
 
           <LanguageSelector initialLanguage={userStat.language} />
 
