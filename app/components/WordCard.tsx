@@ -88,6 +88,11 @@ const partOfSpeechStyles = {
     color: "bg-indigo-700 text-indigo-100",
     label: "interj",
   },
+  idiom: {
+    emoji: "💭",
+    color: "bg-indigo-700 text-indigo-100",
+    label: "idiom",
+  },
 } as const;
 
 // Добавим функцию для определения цвета фона

@@ -81,6 +81,7 @@ enum PartOfSpeech {
   preposition
   conjunction
   interjection
+  idiom
 }
 
 enum Language {
