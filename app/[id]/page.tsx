@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { DeckPageClient } from "./components/DeckPageClient";
+import { DeskPageClient } from "./components/DeskPageClient/DeskPageClient";
 import { getDesk } from "../actions/desks";
 import { getUser } from "../actions/user";
 import { sortWords } from "../utils/sortWords";
@@ -29,5 +29,5 @@ export default async function DeckPage({
     deck.words = sortWords(deck.words);
   }
 
-  return <DeckPageClient deck={deck} isAuthenticated={isAuthenticated} />;
+  return <DeskPageClient deck={deck} isAuthenticated={isAuthenticated} />;
 }
