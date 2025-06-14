@@ -1,10 +1,8 @@
-"use client";
-
 import Link from "next/link";
 import { LevelBadge } from "./LevelBadge";
 
-interface DeckProps {
-  deck: {
+interface DeskProps {
+  desk: {
     id: string;
     name: string;
     description?: string;
@@ -15,23 +13,23 @@ interface DeckProps {
   isAuthenticated: boolean;
 }
 
-export const DeckCard = ({ deck }: DeckProps) => {
+export const DeskCard = ({ desk }: DeskProps) => {
   return (
-    <Link href={`/${deck.id}`}>
+    <Link href={`/${desk.id}`}>
       <div className="bg-slate-800 rounded-lg p-6 hover:bg-slate-700 transition-colors">
         <div className="mb-4">
-          <h3 className="text-xl font-bold text-gray-100 mb-2">{deck.name}</h3>
-          {deck.description && (
-            <p className="text-sm text-gray-400">{deck.description}</p>
+          <h3 className="text-xl font-bold text-gray-100 mb-2">{desk.name}</h3>
+          {desk.description && (
+            <p className="text-sm text-gray-400">{desk.description}</p>
           )}
         </div>
 
         <div className="flex items-center gap-3">
-          <LevelBadge level={deck.level} />
-          <span className="text-sm text-gray-400">{deck.category}</span>
-          {deck.wordsCount !== undefined && (
+          <LevelBadge level={desk.level} />
+          <span className="text-sm text-gray-400">{desk.category}</span>
+          {desk.wordsCount !== undefined && (
             <span className="text-sm text-gray-400">
-              {deck.wordsCount} {deck.wordsCount === 1 ? "word" : "words"}
+              {desk.wordsCount} {desk.wordsCount === 1 ? "word" : "words"}
             </span>
           )}
         </div>

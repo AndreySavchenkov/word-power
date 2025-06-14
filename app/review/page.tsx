@@ -1,6 +1,7 @@
-import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { ReviewPageClient } from "./ReviewPageClient";
+import { getWordsToReview } from "../actions/words";
+import { getUser } from "../actions/user";
 
 export default async function ReviewPage() {
   const session = await getServerSession();
@@ -10,52 +11,14 @@ export default async function ReviewPage() {
     return <ReviewPageClient words={[]} isAuthenticated={isAuthenticated} />;
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user?.email || "" },
-  });
+  const user = await getUser(session.user?.email || "");
 
   if (!user) {
     return <ReviewPageClient words={[]} isAuthenticated={isAuthenticated} />;
   }
 
-  const now = new Date();
-  const wordsToReview = await prisma.userWordProgress.findMany({
-    where: {
-      userId: user.id,
-      nextReview: {
-        lte: now,
-      },
-    },
-    include: {
-      word: {
-        include: {
-          decks: {
-            take: 1,
-            include: {
-              deck: {
-                select: {
-                  id: true,
-                  name: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    orderBy: [
-      {
-        word: {
-          level: "asc",
-        },
-      },
-      {
-        strength: "asc",
-      },
-    ],
-  });
+  const wordsToReview = await getWordsToReview(user.id);
 
-  // Преобразуем данные в нужный формат
   const formattedWords = wordsToReview.map((progress) => ({
     ...progress,
     deck: {

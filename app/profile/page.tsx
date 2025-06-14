@@ -1,10 +1,10 @@
-import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { UserCard } from "@/app/components/UserCard";
 import { SignOutButton } from "@/app/components/SignOutButton";
 import { LanguageSelector } from "@/app/components/LanguageSelector";
 import { ActivityHeatmap } from "@/app/components/ActivityHeatmap";
+import { getUserStats } from "../actions/user";
 
 const transformUserData = (user: {
   name: string | null;
@@ -51,29 +51,7 @@ export default async function Profile() {
 
     const timestamp = Date.now();
 
-    const userStat = await prisma.user.findUnique({
-      where: {
-        email: session.user?.email || "",
-      },
-      select: {
-        id: true,
-        name: true,
-        image: true,
-        email: true,
-        language: true,
-        UserWordProgress: {
-          select: {
-            id: true,
-            strength: true,
-            lastReviewed: true,
-            wordId: true,
-          },
-          orderBy: {
-            lastReviewed: "desc",
-          },
-        },
-      },
-    });
+    const userStat = await getUserStats(session.user.email || "");
 
     if (!userStat) {
       redirect("/");
