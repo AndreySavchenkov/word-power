@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
 import { ReviewCountProvider } from "./contexts/ReviewCountContext";
 
 export const metadata: Metadata = {
@@ -71,7 +70,6 @@ export default function RootLayout({
           <ReviewCountProvider>
             <Header />
             <main className="flex-grow">{children}</main>
-            <Footer />
           </ReviewCountProvider>
         </Providers>
       </body>

@@ -5,6 +5,7 @@ import { SignOutButton } from "@/app/components/SignOutButton";
 import { LanguageSelector } from "@/app/components/LanguageSelector";
 import { ActivityHeatmap } from "@/app/components/ActivityHeatmap";
 import { getUserStats } from "../actions/user";
+import { Footer } from "../components/Footer";
 
 const transformUserData = (user: {
   name: string | null;
@@ -60,22 +61,25 @@ export default async function Profile() {
     const formattedUser = transformUserData(userStat);
 
     return (
-      <div className={"my-auto max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"}>
-        <div className="flex flex-col pt-24 gap-4 p-2">
-          <h1 className="text-2xl font-bold text-gray-100">My Profile:</h1>
+      <>
+        <div className={"my-auto max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"}>
+          <div className="flex flex-col pt-24 gap-4 p-2">
+            <h1 className="text-2xl font-bold text-gray-100">My Profile:</h1>
 
-          <UserCard key={userStat.id} user={formattedUser} />
+            <UserCard key={userStat.id} user={formattedUser} />
 
-          <ActivityHeatmap
-            key={`activity-${timestamp}`}
-            userProgress={userStat.UserWordProgress}
-          />
+            <ActivityHeatmap
+              key={`activity-${timestamp}`}
+              userProgress={userStat.UserWordProgress}
+            />
 
-          <LanguageSelector initialLanguage={userStat.language} />
+            <LanguageSelector initialLanguage={userStat.language} />
 
-          <SignOutButton />
+            <SignOutButton />
+          </div>
         </div>
-      </div>
+        <Footer />
+      </>
     );
   } catch (error) {
     console.error("Error loading profile:", error);
