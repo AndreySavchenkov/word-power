@@ -79,6 +79,6 @@ export default async function Profile() {
     );
   } catch (error) {
     console.error("Error loading profile:", error);
-    redirect("/"); // При ошибке редиректим
+    redirect("/");
   }
 }
