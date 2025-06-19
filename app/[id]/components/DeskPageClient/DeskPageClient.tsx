@@ -42,6 +42,7 @@ export function DeskPageClient({ deck, isAuthenticated }: DeskPageClientProps) {
             <>
               <WordCardSkeleton />
               <RecallButtons
+                key="desk-loading-buttons"
                 onProgress={handleProgress}
                 showSkipButton={true}
                 isAuthenticated={isAuthenticated}
@@ -63,6 +64,7 @@ export function DeskPageClient({ deck, isAuthenticated }: DeskPageClientProps) {
                 isAuthenticated={isAuthenticated}
               />
               <RecallButtons
+                key={`desk-buttons-${currentWord.id}`}
                 onProgress={handleProgress}
                 showSkipButton={true}
                 isAuthenticated={isAuthenticated}

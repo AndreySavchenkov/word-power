@@ -11,7 +11,11 @@ export const useReview = (initialWords: WordToReview[]) => {
   const [isLoading, setIsLoading] = useState(false);
   const { decrementReviewCount } = useReviewCount();
 
+  const currentWord = words[currentIndex];
+
   const handleRecallLevel = async (levelId?: number) => {
+    if (!currentWord) return;
+
     try {
       await fetch("/api/progress", {
         method: "POST",
@@ -31,6 +35,8 @@ export const useReview = (initialWords: WordToReview[]) => {
   };
 
   const handleProgress = async (levelId?: number) => {
+    if (!currentWord) return;
+
     setIsTransitioning(true);
     setIsLoading(true);
     await handleRecallLevel(levelId);
@@ -41,8 +47,6 @@ export const useReview = (initialWords: WordToReview[]) => {
       setIsLoading(false);
     }, 500);
   };
-
-  const currentWord = words[currentIndex];
 
   return {
     currentWord,

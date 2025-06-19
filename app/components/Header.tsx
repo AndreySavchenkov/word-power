@@ -58,7 +58,7 @@ export const Header = () => {
 
     if (status !== "loading") {
       fetchReviewCount();
-      // Обновляем каждую минуту
+      
       const interval = setInterval(fetchReviewCount, 60000);
       return () => clearInterval(interval);
     }
