@@ -9,7 +9,7 @@ export const useDesk = (deck: DeskWithWords) => {
   const [wordProgress, setWordProgress] = useState<UserWordProgress | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchProgress = async () => {
