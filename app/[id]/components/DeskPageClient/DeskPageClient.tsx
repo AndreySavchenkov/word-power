@@ -56,6 +56,7 @@ export function DeskPageClient({ deck, isAuthenticated }: DeskPageClientProps) {
             />
           )}
           <RecallButtons
+            isLoading={isLoading}
             onProgress={handleProgress}
             showSkipButton={true}
             isAuthenticated={isAuthenticated}

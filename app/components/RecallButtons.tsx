@@ -3,12 +3,14 @@ interface RecallButtonsProps {
   showSkipButton?: boolean;
   isTransitioning?: boolean;
   isAuthenticated?: boolean;
+  isLoading?: boolean;
 }
 
 export const RecallButtons = ({
   onProgress,
   showSkipButton,
   isAuthenticated = false,
+  isLoading = false,
 }: RecallButtonsProps) => {
   const recallLevels = [
     {
@@ -64,6 +66,7 @@ export const RecallButtons = ({
                   ${level.bgColor} ${level.color} ${level.hoverBgColor}
                   hover:scale-105 active:scale-95 shadow-lg
                 `}
+                disabled={isLoading}
                 >
                   {level.label}
                 </button>
@@ -81,6 +84,7 @@ export const RecallButtons = ({
                   hover:scale-105 active:scale-95
                   border border-slate-600
                 `}
+                disabled={isLoading}
               >
                 Skip
               </button>
