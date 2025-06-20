@@ -123,17 +123,14 @@ export const WordCard = ({
 
   useEffect(() => {
     const translateContent = async () => {
-      // Если пользователь не авторизован, не делаем перевод
       if (!isAuthenticated) return;
 
       try {
         const response = await fetch("/api/user/language/current");
         const { language } = await response.json();
 
-        // Если язык английский, не переводим
         if (language === "en_US") return;
 
-        // Переводим слово
         try {
           const wordTranslateResponse = await fetch("/api/translate", {
             method: "POST",
@@ -154,14 +151,11 @@ export const WordCard = ({
           console.error("Error translating word:", error);
         }
 
-        // Переводим определения
         for (const def of word.definition) {
           setLoadingTranslations((prev) => ({ ...prev, [def]: true }));
           try {
-            // Проверяем, является ли определение формой неправильного глагола
             const irregularVerbPattern = /^[a-zA-Z]+ – [a-zA-Z]+ – [a-zA-Z]+$/;
             if (irregularVerbPattern.test(def.trim())) {
-              // Если это форма неправильного глагола, сохраняем как есть без перевода
               setTranslations((prev) => ({ ...prev, [def]: def }));
               setLoadingTranslations((prev) => ({ ...prev, [def]: false }));
               continue;
@@ -214,7 +208,6 @@ export const WordCard = ({
   // };
 
   const handleClick = (e: React.MouseEvent) => {
-    // Проверяем, был ли клик по переводимому элементу
     const target = e.target as HTMLElement;
     if (target.closest(".translatable")) {
       return;
@@ -242,7 +235,7 @@ export const WordCard = ({
                 ${isFlipped ? "rotate-y-180" : ""}
               `}
             >
-              {/* Передняя сторона */}
+              {/* Front side */}
               <div className="absolute inset-0 backface-hidden">
                 <div
                   className={`w-full h-full ${getBackgroundColor(
@@ -262,7 +255,7 @@ export const WordCard = ({
                 </div>
               </div>
 
-              {/* Задняя сторона */}
+              {/* Back side */}
               <div className="absolute inset-0 backface-hidden rotate-y-180">
                 <div
                   className={`w-full h-full ${getBackgroundColor(
@@ -270,9 +263,9 @@ export const WordCard = ({
                   )} rounded-lg shadow-xl p-2 sm:p-6 overflow-y-auto`}
                 >
                   <div className="h-full flex flex-col">
-                    {/* Верхняя секция */}
+                    {/* Top section */}
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                      {/* Левая колонка с изображением */}
+                      {/* Left column with image */}
                       <div className="w-full sm:w-1/2  relative h-[200px] sm:h-[300px]">
                         {word.imgUrl ? (
                           <>
@@ -346,7 +339,7 @@ export const WordCard = ({
                         </div>
                       </div>
 
-                      {/* Правая колонка с информацией */}
+                      {/* Right column with information */}
                       <div className="w-full sm:w-1/2 flex flex-col">
                         <div className="hidden sm:block mb-4">
                           <div className="flex items-center justify-between gap-2 mb-2">
@@ -371,7 +364,7 @@ export const WordCard = ({
                           </div>
                         </div>
 
-                        {/* Выводим все части речи и определения */}
+                        {/* Show all parts of speech and definitions */}
                         <div className="mb-4">
                           <div className="flex flex-wrap gap-2 mb-2">
                             {word.partOfSpeech.map((pos, index) => (
@@ -399,7 +392,7 @@ export const WordCard = ({
                           </div>
                         </div>
 
-                        {/* Примеры */}
+                        {/* Examples */}
                         <div className="space-y-1.5">
                           <div className="border-t border-slate-700 mb-3 w-full"></div>
                           {word.examples.map((example, index) => (

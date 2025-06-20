@@ -20,13 +20,11 @@ const Logo = () => (
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: session, status } = useSession();
   const { reviewCount, setReviewCount } = useReviewCount();
   const isAuthenticated = status === "authenticated";
   const pathname = usePathname();
-
-  //TDO: delete later
-  console.log(`session: ${session}`);
 
   const isActive = (path: string) => pathname === path;
 

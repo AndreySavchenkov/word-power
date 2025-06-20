@@ -27,11 +27,11 @@ export function ReviewPageClient({
   words: initialWords,
   isAuthenticated,
 }: ReviewPageClientProps) {
-  const { currentWord, isTransitioning, isLoading, handleProgress } =
+  const { currentWord, isTransitioning, isLoading, handleProgress, isClient } =
     useReview(initialWords);
 
   const canShowEmptyState = initialWords.length === 0;
-  const canShowCompletedState = !isLoading && !currentWord;
+  const canShowCompletedState = isClient && !isLoading && !currentWord;
 
   if (canShowEmptyState) {
     return <EmptyState />;
@@ -39,6 +39,17 @@ export function ReviewPageClient({
 
   if (canShowCompletedState) {
     return <CompletedState />;
+  }
+
+  // Show skeleton during client initialization
+  if (!isClient) {
+    return (
+      <div className="min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <WordCardSkeleton />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -52,10 +63,10 @@ export function ReviewPageClient({
           ) : (
             <>
               <WordCard
-                key={currentWord.word.id}
-                word={currentWord.word}
-                deckId={currentWord.deck.id}
-                strength={currentWord.strength}
+                key={currentWord?.word.id}
+                word={currentWord!.word}
+                deckId={currentWord!.deck.id}
+                strength={currentWord!.strength}
                 isAuthenticated={isAuthenticated}
               />
             </>

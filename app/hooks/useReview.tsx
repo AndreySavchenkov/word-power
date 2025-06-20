@@ -1,15 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useReviewCount } from "../contexts/ReviewCountContext";
 import { WordToReview } from "../review/ReviewPageClient";
 
 export const useReview = (initialWords: WordToReview[]) => {
-  const [words, setWords] = useState(initialWords);
+  const [isClient, setIsClient] = useState(false);
+  const [words, setWords] = useState<WordToReview[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { decrementReviewCount } = useReviewCount();
+
+  // Initialize only on client
+  useEffect(() => {
+    setIsClient(true);
+    setWords(initialWords);
+  }, [initialWords]);
 
   const currentWord = words[currentIndex];
 
@@ -49,9 +56,10 @@ export const useReview = (initialWords: WordToReview[]) => {
   };
 
   return {
-    currentWord,
+    currentWord: isClient ? currentWord : null,
     isTransitioning,
     isLoading,
     handleProgress,
+    isClient,
   };
 };

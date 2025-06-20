@@ -1,3 +1,6 @@
+import { memo, useCallback } from "react";
+import { RECALL_LEVELS } from "@/app/constants/recall-levels";
+
 interface RecallButtonsProps {
   onProgress: (levelId?: number) => void;
   showSkipButton?: boolean;
@@ -6,92 +9,86 @@ interface RecallButtonsProps {
   isLoading?: boolean;
 }
 
-export const RecallButtons = ({
-  onProgress,
-  showSkipButton,
-  isAuthenticated = false,
-  isLoading = false,
-}: RecallButtonsProps) => {
-  const recallLevels = [
-    {
-      id: 1,
-      label: "Don't know",
-      color: "text-red-100",
-      bgColor: "bg-red-700",
-      hoverBgColor: "hover:bg-red-600",
-    },
-    {
-      id: 2,
-      label: "Hard",
-      color: "text-orange-100",
-      bgColor: "bg-orange-700",
-      hoverBgColor: "hover:bg-orange-600",
-    },
-    {
-      id: 3,
-      label: "Good",
-      color: "text-yellow-100",
-      bgColor: "bg-yellow-700",
-      hoverBgColor: "hover:bg-yellow-600",
-    },
-    {
-      id: 4,
-      label: "Easy",
-      color: "text-green-100",
-      bgColor: "bg-green-700",
-      hoverBgColor: "hover:bg-green-600",
-    },
-  ];
+export const RecallButtons = memo(
+  ({
+    onProgress,
+    showSkipButton,
+    isAuthenticated = false,
+    isLoading = false,
+  }: RecallButtonsProps) => {
+    const handleClick = useCallback(
+      (levelId?: number) => {
+        if (levelId !== undefined && !isAuthenticated) {
+          return;
+        }
+        onProgress(levelId);
+      },
+      [onProgress, isAuthenticated]
+    );
 
-  const handleClick = (levelId?: number) => {
-    if (levelId !== undefined && !isAuthenticated) {
-      return;
-    }
-    onProgress(levelId);
-  };
-
-  return (
-    <div className="buttons-container">
-      <div className="max-w-2xl mx-auto px-4">
-        <div className="flex flex-col gap-3">
-          {isAuthenticated && (
-            <div className="flex justify-center gap-3">
-              {recallLevels.map((level) => (
+    return (
+      <div className="buttons-container w-full">
+        <div className="max-w-2xl mx-auto px-2 sm:px-6">
+          <div className="flex flex-col gap-4 sm:gap-3">
+            {isAuthenticated && (
+              <div className="flex justify-between gap-2 sm:gap-3">
+                {RECALL_LEVELS.map((level) => (
+                  <button
+                    key={level.id}
+                    onClick={() => handleClick(level.id)}
+                    disabled={isLoading}
+                    aria-label={level.ariaLabel}
+                    className={`
+                      flex-1 min-h-[52px] sm:min-h-[48px]
+                      px-2 py-3 sm:px-3 sm:py-3
+                      rounded-lg text-xs sm:text-sm font-medium
+                      transform transition-all duration-200
+                      ${level.bgColor} ${level.color} 
+                      ${level.hoverBgColor} ${level.activeBgColor}
+                      hover:scale-105 active:scale-95 
+                      shadow-lg hover:shadow-xl
+                      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                      disabled:opacity-50 disabled:cursor-not-allowed
+                      disabled:transform-none disabled:shadow-md
+                      touch-manipulation
+                    `}
+                  >
+                    <span className="hidden sm:inline">{level.label}</span>
+                    <span className="sm:hidden">{level.shortLabel}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+            {showSkipButton && (
+              <div className="flex justify-center">
                 <button
-                  key={level.id}
-                  onClick={() => handleClick(level.id)}
+                  onClick={() => handleClick()}
+                  disabled={isLoading}
+                  aria-label="Skip this word"
                   className={`
-                  px-3 py-3 rounded-xl text-sm font-medium
-                  transform transition-all duration-200
-                  ${level.bgColor} ${level.color} ${level.hoverBgColor}
-                  hover:scale-105 active:scale-95 shadow-lg
-                `}
-                disabled={isLoading}
+                    min-h-[48px] sm:min-h-[40px]
+                    px-6 py-3 sm:px-4 sm:py-2
+                    rounded-lg text-sm sm:text-xs font-medium w-full max-w-xs
+                    transform transition-all duration-200
+                    bg-slate-700 text-slate-300 
+                    hover:bg-slate-600 active:bg-slate-800
+                    hover:scale-105 active:scale-95
+                    border border-slate-600
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    disabled:transform-none
+                    touch-manipulation
+                  `}
                 >
-                  {level.label}
+                  Skip
                 </button>
-              ))}
-            </div>
-          )}
-          {showSkipButton && (
-            <div className="flex justify-center">
-              <button
-                onClick={() => handleClick()}
-                className={`
-                  px-3 py-[11px] rounded-xl text-sm font-medium w-full
-                  transform transition-all duration-200
-                  bg-slate-700 text-slate-300 hover:bg-slate-600
-                  hover:scale-105 active:scale-95
-                  border border-slate-600
-                `}
-                disabled={isLoading}
-              >
-                Skip
-              </button>
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
+
+RecallButtons.displayName = "RecallButtons";
