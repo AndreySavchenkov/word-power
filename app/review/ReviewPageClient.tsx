@@ -29,7 +29,6 @@ export function ReviewPageClient({
   const { currentWord, isTransitioning, isLoading, handleProgress } =
     useReview(initialWords);
 
-  // Если нет слов для повторения
   if (initialWords.length === 0) {
     return (
       <div className="min-h-screen">

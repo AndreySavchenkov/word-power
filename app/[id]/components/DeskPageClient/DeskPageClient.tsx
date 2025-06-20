@@ -39,38 +39,27 @@ export function DeskPageClient({ deck, isAuthenticated }: DeskPageClientProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className={isTransitioning ? "pointer-events-none" : ""}>
           {isLoading ? (
-            <>
-              <WordCardSkeleton />
-              <RecallButtons
-                key="desk-loading-buttons"
-                onProgress={handleProgress}
-                showSkipButton={true}
-                isAuthenticated={isAuthenticated}
-              />
-            </>
+            <WordCardSkeleton />
           ) : (
-            <>
-              <WordCard
-                key={currentWord.id}
-                word={{
-                  ...currentWord,
-                  globalStrength: 0,
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                  imgUrl: currentWord.imgUrl || null,
-                }}
-                deckId={deck.id}
-                strength={wordProgress?.strength}
-                isAuthenticated={isAuthenticated}
-              />
-              <RecallButtons
-                key={`desk-buttons-${currentWord.id}`}
-                onProgress={handleProgress}
-                showSkipButton={true}
-                isAuthenticated={isAuthenticated}
-              />
-            </>
+            <WordCard
+              key={currentWord.id}
+              word={{
+                ...currentWord,
+                globalStrength: 0,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                imgUrl: currentWord.imgUrl || null,
+              }}
+              deckId={deck.id}
+              strength={wordProgress?.strength}
+              isAuthenticated={isAuthenticated}
+            />
           )}
+          <RecallButtons
+            onProgress={handleProgress}
+            showSkipButton={true}
+            isAuthenticated={isAuthenticated}
+          />
         </div>
       </div>
     </div>
