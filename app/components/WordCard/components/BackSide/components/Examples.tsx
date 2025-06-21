@@ -8,15 +8,22 @@ type ExamplesProps = {
 export const Examples = ({ word }: ExamplesProps) => {
   const { SpeakableText } = useSpeech();
   return (
-    <div className="space-y-1.5">
-      <div className="border-t border-slate-700 mb-3 w-full"></div>
+    <div className="space-y-3">
+      <div className="border-t border-slate-600 mb-4 w-full"></div>
+      <h4 className="text-sm sm:text-base font-semibold text-gray-300 mb-3">
+        Examples:
+      </h4>
       {word.examples.map((example, index) => (
         <div
           key={index}
-          className="flex items-center gap-2 text-gray-500 translatable"
+          className="flex items-start gap-3 text-gray-400 translatable bg-gray-800/20 rounded-lg p-3 hover:bg-gray-800/40 transition-colors"
           onClick={(e) => e.stopPropagation()}
         >
-          <SpeakableText text={example} className="text-sm speakable-text" />
+          <span className="text-blue-400 font-mono text-sm mt-0.5">•</span>
+          <SpeakableText
+            text={example}
+            className="text-sm sm:text-base speakable-text leading-relaxed flex-1"
+          />
         </div>
       ))}
     </div>

@@ -23,7 +23,7 @@ export const ImageSection = ({
 }: ImageSectionProps) => {
   const { SpeakableText } = useSpeech();
   return (
-    <div className="w-full sm:w-1/2  relative h-[200px] sm:h-[300px]">
+    <div className="w-full relative h-[200px] sm:h-[400px]">
       {word.imgUrl ? (
         <>
           {isImageLoading && (

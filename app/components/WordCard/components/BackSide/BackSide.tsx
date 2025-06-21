@@ -29,10 +29,10 @@ export const BackSide = ({
       <div
         className={`w-full h-full ${getBackgroundColor(
           strength
-        )} rounded-lg shadow-xl p-2 sm:p-6 overflow-y-auto`}
+        )} rounded-xl shadow-xl p-2 sm:p-6 flex flex-col`}
       >
-        <div className="h-full flex flex-col">
-          <div className="flex flex-col sm:flex-row gap-4 mb-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-2 h-full">
+          <div className="w-full sm:w-1/2 flex-shrink-0 mb-2 sm:mb-0">
             <ImageSection
               word={word}
               isImageLoading={isImageLoading}
@@ -40,14 +40,15 @@ export const BackSide = ({
               wordTranslation={wordTranslation}
               strength={strength}
             />
+          </div>
+          <div className="w-full sm:w-1/2 flex flex-col">
+            <WordInformation
+              word={word}
+              wordTranslation={wordTranslation}
+              strength={strength}
+            />
 
-            <div className="w-full sm:w-1/2 flex flex-col">
-              <WordInformation
-                word={word}
-                wordTranslation={wordTranslation}
-                strength={strength}
-              />
-
+            <div className="flex-1 overflow-y-auto">
               <PartsOfSpeech
                 word={word}
                 loadingTranslations={loadingTranslations}
