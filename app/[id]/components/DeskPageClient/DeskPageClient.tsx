@@ -1,6 +1,6 @@
 "use client";
 
-import { WordCard } from "@/app/components/WordCard";
+import { WordCard } from "@/app/components/WordCard/WordCard";
 import { WordCardSkeleton } from "@/app/components/WordCardSkeleton";
 import { Deck, Word, DeckWord, UserWordProgress } from "@prisma/client";
 import { RecallButtons } from "@/app/components/RecallButtons";

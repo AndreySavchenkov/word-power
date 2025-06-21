@@ -1,12 +1,12 @@
 "use client";
 
 import { Word, UserWordProgress } from "@prisma/client";
-import { WordCard } from "../components/WordCard";
 import { WordCardSkeleton } from "../components/WordCardSkeleton";
 import { RecallButtons } from "../components/RecallButtons";
 import { useReview } from "../hooks/useReview";
 import { EmptyState } from "./components/EmptyState/EmptyState";
 import { CompletedState } from "./components/CompletedState/CompletedState";
+import { WordCard } from "../components/WordCard/WordCard";
 
 export type WordToReview = UserWordProgress & {
   word: Omit<Word, "level"> & {
