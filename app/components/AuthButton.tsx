@@ -3,7 +3,8 @@
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 
@@ -11,6 +12,22 @@ export default function AuthButton() {
   const { data: session, status } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (showAuthModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [showAuthModal]);
 
   if (status === "loading") {
     return (
@@ -50,6 +67,55 @@ export default function AuthButton() {
   const handleAuthSuccess = () => {
     setShowAuthModal(false);
   };
+
+  const modalContent = showAuthModal && (
+    <>
+      <div className="fixed inset-0 z-40 backdrop-blur-md bg-black/20" />
+
+      <div className="fixed inset-0 z-50">
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative min-h-screen flex items-center justify-center p-4">
+          <div className="bg-slate-800 border border-slate-600 rounded-xl p-6 w-full max-w-md shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-semibold text-white">
+                {authMode === "signin" ? "Sign In" : "Sign Up"}
+              </h2>
+              <button
+                onClick={() => setShowAuthModal(false)}
+                className="text-slate-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-slate-700"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {authMode === "signin" ? (
+              <SignInForm
+                onSuccess={handleAuthSuccess}
+                onSwitchToSignUp={() => setAuthMode("signup")}
+              />
+            ) : (
+              <SignUpForm
+                onSuccess={handleAuthSuccess}
+                onSwitchToSignIn={() => setAuthMode("signin")}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <>
@@ -91,47 +157,7 @@ export default function AuthButton() {
         </button>
       </div>
 
-      {showAuthModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 border border-slate-600 rounded-xl p-6 w-full max-w-md shadow-2xl">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-white">
-                {authMode === "signin" ? "Sign In" : "Sign Up"}
-              </h2>
-              <button
-                onClick={() => setShowAuthModal(false)}
-                className="text-slate-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-slate-700"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            {authMode === "signin" ? (
-              <SignInForm
-                onSuccess={handleAuthSuccess}
-                onSwitchToSignUp={() => setAuthMode("signup")}
-              />
-            ) : (
-              <SignUpForm
-                onSuccess={handleAuthSuccess}
-                onSwitchToSignIn={() => setAuthMode("signin")}
-              />
-            )}
-          </div>
-        </div>
-      )}
+      {mounted && modalContent && createPortal(modalContent, document.body)}
     </>
   );
 }
