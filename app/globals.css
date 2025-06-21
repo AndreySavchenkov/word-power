@@ -54,6 +54,7 @@ body {
   max-width: 42rem;
   padding: 0 1rem;
   height: calc(100vh - 220px);
+  will-change: transform;
 }
 
 @media (min-width: 640px) {
@@ -70,6 +71,7 @@ body {
     top: 45%;
     transform: translate(-50%, -50%);
     height: calc(100vh - 300px);
+    touch-action: manipulation;
   }
 }
 
@@ -91,4 +93,9 @@ body {
   100% {
     content: "...";
   }
+}
+
+.card-focus:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
