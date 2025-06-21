@@ -2,7 +2,10 @@ import { UserWordProgress } from "@prisma/client";
 import { useState, useEffect } from "react";
 import { DeskWithWords } from "../[id]/components/DeskPageClient/DeskPageClient";
 
-export const useDesk = (deck: DeskWithWords) => {
+export const useDesk = (
+  deck: DeskWithWords,
+  isAuthenticated: boolean = false
+) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -13,12 +16,25 @@ export const useDesk = (deck: DeskWithWords) => {
 
   useEffect(() => {
     const fetchProgress = async () => {
+      if (!isAuthenticated) {
+        setWordProgress(null);
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
       const currentWordId = deck.words[currentWordIndex]?.word.id;
       if (!currentWordId) return;
 
       try {
         const response = await fetch(`/api/progress/${currentWordId}`);
+
+        if (response.status === 401) {
+          console.log("User not authenticated, skipping progress fetch");
+          setWordProgress(null);
+          return;
+        }
+
         if (response.ok) {
           const progress = await response.json();
           setWordProgress(progress);
@@ -31,11 +47,11 @@ export const useDesk = (deck: DeskWithWords) => {
     };
 
     fetchProgress();
-  }, [currentWordIndex, deck.words]);
+  }, [currentWordIndex, deck.words, isAuthenticated]);
 
   const handleProgress = async (levelId?: number) => {
     setIsTransitioning(true);
-    if (levelId) {
+    if (levelId && isAuthenticated) {
       await handleRecallLevel(levelId);
     }
     setTimeout(() => {
@@ -49,8 +65,13 @@ export const useDesk = (deck: DeskWithWords) => {
   };
 
   const handleRecallLevel = async (levelId: number) => {
+    if (!isAuthenticated) {
+      console.log("User not authenticated, skipping progress save");
+      return;
+    }
+
     try {
-      await fetch("/api/progress", {
+      const response = await fetch("/api/progress", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,6 +82,15 @@ export const useDesk = (deck: DeskWithWords) => {
           deckId: deck.id,
         }),
       });
+
+      if (response.status === 401) {
+        console.log("User not authenticated, cannot save progress");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to save progress: ${response.status}`);
+      }
     } catch (error) {
       console.error("Failed to save progress:", error);
     }

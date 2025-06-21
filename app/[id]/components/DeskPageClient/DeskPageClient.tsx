@@ -28,7 +28,7 @@ export function DeskPageClient({ deck, isAuthenticated }: DeskPageClientProps) {
     wordProgress,
     isLoading,
     handleProgress,
-  } = useDesk(deck);
+  } = useDesk(deck, isAuthenticated);
 
   if (isCompleted || deck.words.length === 0) {
     return <EmptyState />;

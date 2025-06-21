@@ -21,6 +21,16 @@ export const useWord = (word: WordInCard, isAuthenticated: boolean) => {
 
       try {
         const response = await fetch("/api/user/language/current");
+
+        if (response.status === 401) {
+          console.log("User not authenticated, skipping translation");
+          return;
+        }
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch language: ${response.status}`);
+        }
+
         const { language } = await response.json();
 
         if (language === "en_US") return;
@@ -31,7 +41,13 @@ export const useWord = (word: WordInCard, isAuthenticated: boolean) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: word.eng, mode: "word" }),
-        }).then((res) => (res.ok ? res.json() : null));
+        }).then((res) => {
+          if (res.status === 401) {
+            console.log("User not authenticated, skipping word translation");
+            return null;
+          }
+          return res.ok ? res.json() : null;
+        });
 
         for (const def of word.definition) {
           setLoadingTranslations((prev) => ({ ...prev, [def]: true }));
@@ -48,7 +64,15 @@ export const useWord = (word: WordInCard, isAuthenticated: boolean) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text: def, mode: "definition" }),
           })
-            .then((res) => (res.ok ? res.json() : null))
+            .then((res) => {
+              if (res.status === 401) {
+                console.log(
+                  "User not authenticated, skipping definition translation"
+                );
+                return null;
+              }
+              return res.ok ? res.json() : null;
+            })
             .then((data) => ({ def, translation: data?.translation || def }))
             .finally(() => {
               setLoadingTranslations((prev) => ({ ...prev, [def]: false }));

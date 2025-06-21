@@ -24,7 +24,7 @@ export const useReview = (initialWords: WordToReview[]) => {
     if (!currentWord) return;
 
     try {
-      await fetch("/api/progress", {
+      const response = await fetch("/api/progress", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +35,16 @@ export const useReview = (initialWords: WordToReview[]) => {
           deckId: currentWord.deck.id,
         }),
       });
-      decrementReviewCount();
+
+      if (response.status === 401) {
+        console.log("User not authenticated, cannot save progress");
+
+        return;
+      }
+
+      if (response.ok) {
+        decrementReviewCount();
+      }
     } catch (error) {
       console.error("Failed to save progress:", error);
     }
