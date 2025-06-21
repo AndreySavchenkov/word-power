@@ -1,8 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Header } from "./components/Header";
 import { ReviewCountProvider } from "./contexts/ReviewCountContext";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title:
@@ -37,8 +44,6 @@ export const metadata: Metadata = {
       "Effective English words learning app with spaced repetition system.",
     images: ["/images/word-power-twitter.jpg"],
   },
-  viewport:
-    "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
   applicationName: "Word Power",
   category: "education",
   alternates: {

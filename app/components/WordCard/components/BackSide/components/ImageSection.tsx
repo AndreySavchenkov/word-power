@@ -60,7 +60,7 @@ export const ImageSection = ({
             className={`w-full h-full object-cover rounded-lg shadow-md transition-opacity duration-300 ${
               isImageLoading ? "opacity-0" : "opacity-100"
             }`}
-            onLoadingComplete={() => setIsImageLoading(false)}
+            onLoad={() => setIsImageLoading(false)}
           />
         </>
       ) : (
