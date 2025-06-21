@@ -11,8 +11,14 @@ import { usePathname } from "next/navigation";
 
 const Logo = () => (
   <div className="flex items-center gap-2">
-    <Image src={logoImg} alt="Logo" width={36} height={36} />
-    <span className="hidden sm:inline text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-blue-500">
+    <Image
+      src={logoImg}
+      alt="Logo"
+      width={36}
+      height={36}
+      className="w-9 h-9 sm:w-10 sm:h-10"
+    />
+    <span className="hidden sm:inline text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-white to-blue-500">
       WordPower
     </span>
   </div>
@@ -56,7 +62,7 @@ export const Header = () => {
 
     if (status !== "loading") {
       fetchReviewCount();
-      
+
       const interval = setInterval(fetchReviewCount, 60000);
       return () => clearInterval(interval);
     }
@@ -66,14 +72,14 @@ export const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-slate-800/95 backdrop-blur-sm shadow-lg"
-          : "bg-slate-800/50"
+          ? "bg-slate-900/95 backdrop-blur-md shadow-xl border-b border-slate-700/50"
+          : "bg-slate-900/80 backdrop-blur-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-12 sm:h-16">
-          <div className="w-1/4">
-            <Link href="/">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center h-16 sm:h-18">
+          <div className="flex-shrink-0">
+            <Link href="/" className="flex items-center">
               <Logo />
             </Link>
           </div>
@@ -81,22 +87,23 @@ export const Header = () => {
             {isAuthenticated && (
               <Link
                 href="/review"
-                className={`text-sm font-medium transition-colors flex items-center gap-2 ${
+                className={`relative px-5 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 text-base ${
                   isActive("/review")
-                    ? "text-white"
-                    : "text-gray-300 hover:text-white"
+                    ? "text-white bg-slate-700/50 shadow-lg"
+                    : "text-gray-300 hover:text-white hover:bg-slate-700/30"
                 }`}
               >
-                Review
+                <span className="hidden xs:inline">Review</span>
+                <span className="xs:hidden">Review</span>
                 {reviewCount > 0 && (
-                  <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                  <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 text-xs font-bold leading-none text-white bg-red-500 rounded-full shadow-sm">
                     {reviewCount}
                   </span>
                 )}
               </Link>
             )}
           </div>
-          <div className="w-1/4 flex justify-end">
+          <div className="flex-shrink-0">
             <AuthButton />
           </div>
         </div>
