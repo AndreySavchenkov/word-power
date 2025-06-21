@@ -25,14 +25,14 @@ export const BackSide = ({
   translations,
 }: BackSideProps) => {
   return (
-    <div className="absolute inset-0 backface-hidden rotate-y-180">
+    <div className="absolute inset-0 backface-hidden rotate-y-180 h-full">
       <div
         className={`w-full h-full ${getBackgroundColor(
           strength
         )} rounded-xl shadow-xl p-2 sm:p-6 flex flex-col`}
       >
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-2 h-[600px] sm:h-[450px]">
-          <div className="w-full sm:w-1/2 flex-shrink-0 mb-2 sm:mb-0 h-[200px] sm:h-auto">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-2 h-full">
+          <div className="w-full sm:w-1/2 flex-shrink-0 mb-2 sm:mb-0 h-[180px] sm:h-full">
             <ImageSection
               word={word}
               isImageLoading={isImageLoading}
@@ -41,7 +41,7 @@ export const BackSide = ({
               strength={strength}
             />
           </div>
-          <div className="w-full sm:w-1/2 flex flex-col h-[380px] sm:h-full">
+          <div className="w-full sm:w-1/2 flex flex-col h-0 sm:h-full flex-1 pt-4">
             <div className="flex-shrink-0">
               <WordInformation
                 word={word}
@@ -49,14 +49,12 @@ export const BackSide = ({
                 strength={strength}
               />
             </div>
-
-            <div className="flex-1 overflow-y-auto min-h-0">
+            <div className="flex-1 min-h-0 overflow-y-auto">
               <PartsOfSpeech
                 word={word}
                 loadingTranslations={loadingTranslations}
                 translations={translations}
               />
-
               <Examples word={word} />
             </div>
           </div>
