@@ -66,6 +66,11 @@ export const ActivityHeatmap = ({ userProgress }: ActivityHeatmapProps) => {
     )}-${String(date.getDate()).padStart(2, "0")}`;
   };
 
+  const formatDateForDisplay = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0].split("-").reverse().join("/");
+  };
+
   const getColorByCount = (count: number) => {
     if (count === 0) return "rgb(51, 65, 85)"; // slate-700
     if (count <= 2) return "rgb(21, 128, 61, 0.3)"; // green-700
@@ -153,7 +158,7 @@ export const ActivityHeatmap = ({ userProgress }: ActivityHeatmapProps) => {
         <div className="relative flex ml-3 h-5 mb-1">
           {months.map((month, index) => (
             <div
-              key={`${month.name}-${index}`}
+              key={`${month.name}-${month.position}-${index}`}
               className="absolute text-xs text-slate-400"
               style={{
                 left: `${month.position * 16}px`,
@@ -168,14 +173,14 @@ export const ActivityHeatmap = ({ userProgress }: ActivityHeatmapProps) => {
         <div className="flex">
           <div className="flex gap-1 pr-4">
             {calendarData.map((week, weekIndex) => (
-              <div key={weekIndex} className="flex flex-col gap-1">
+              <div key={`week-${weekIndex}`} className="flex flex-col gap-1">
                 {Array.from({ length: 7 }).map((_, dayIndex) => {
                   const day = week.find(
                     (d: DayData) => d.dayOfWeek === dayIndex
                   );
                   return (
                     <div
-                      key={dayIndex}
+                      key={`${weekIndex}-${dayIndex}`}
                       className={`w-3 h-3 rounded-sm transition-colors duration-200 ${
                         day?.isToday ? "ring-2 ring-green-500" : ""
                       }`}
@@ -186,7 +191,7 @@ export const ActivityHeatmap = ({ userProgress }: ActivityHeatmapProps) => {
                       }}
                       title={
                         day
-                          ? `${new Date(day.date).toLocaleDateString()}: ${
+                          ? `${formatDateForDisplay(day.date)}: ${
                               day.count
                             } reviews ${day.isToday ? "(Today)" : ""}`
                           : "No data"
@@ -201,9 +206,9 @@ export const ActivityHeatmap = ({ userProgress }: ActivityHeatmapProps) => {
 
         <div className="flex items-center justify-end mt-3 text-xs text-slate-400">
           <span className="mr-2">Less</span>
-          {legendSteps.map((level) => (
+          {legendSteps.map((level, index) => (
             <div
-              key={level}
+              key={`legend-${level}-${index}`}
               className="w-3 h-3 rounded-sm mx-0.5"
               style={{ backgroundColor: getColorByCount(level) }}
               title={`${level} reviews`}
