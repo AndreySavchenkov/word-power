@@ -41,14 +41,17 @@ export const BackSide = ({
               strength={strength}
             />
           </div>
-          <div className="w-full sm:w-1/2 flex flex-col">
+          <div className="w-full sm:w-1/2 flex flex-col overflow-hidden">
             <WordInformation
               word={word}
               wordTranslation={wordTranslation}
               strength={strength}
             />
 
-            <div className="flex-1 overflow-y-auto">
+            <div
+              className="overflow-y-auto"
+              style={{ height: "calc(100% - 10px)" }}
+            >
               <PartsOfSpeech
                 word={word}
                 loadingTranslations={loadingTranslations}

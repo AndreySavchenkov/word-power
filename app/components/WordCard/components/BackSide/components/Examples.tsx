@@ -16,7 +16,7 @@ export const Examples = ({ word }: ExamplesProps) => {
       {word.examples.map((example, index) => (
         <div
           key={index}
-          className="flex items-start gap-3 text-gray-400 translatable bg-gray-800/20 rounded-lg p-3 hover:bg-gray-800/40 transition-colors"
+          className="flex items-start gap-3 p-1 text-gray-400 translatable bg-gray-800/20 rounded-lg hover:bg-gray-800/40 transition-colors"
           onClick={(e) => e.stopPropagation()}
         >
           <span className="text-blue-400 font-mono text-sm mt-0.5">•</span>
