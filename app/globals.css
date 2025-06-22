@@ -4,10 +4,12 @@
 
 .perspective-1000 {
   perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
 
 .transform-style-3d {
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 .backface-hidden {
@@ -17,6 +19,7 @@
 
 .rotate-y-180 {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 :root {
@@ -35,6 +38,8 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .buttons-container {
@@ -49,6 +54,7 @@ body {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
   z-index: 30;
   width: 100%;
   max-width: 42rem;
@@ -70,8 +76,10 @@ body {
   .card-container {
     top: 45%;
     transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
     height: calc(100vh - 300px);
     touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -98,4 +106,14 @@ body {
 .card-focus:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .card-container {
+    touch-action: pan-y pinch-zoom;
+  }
 }
