@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import { Header } from "./components/Header";
 import { ReviewCountProvider } from "./contexts/ReviewCountContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -77,6 +78,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-grow">{children}</main>
             <SpeedInsights />
+            <Analytics />
           </ReviewCountProvider>
         </Providers>
       </body>
